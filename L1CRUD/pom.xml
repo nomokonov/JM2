@@ -9,6 +9,7 @@
     <packaging>war</packaging>
     <version>1.0</version>
 
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -17,63 +18,85 @@
         <org.apache.tomcat.version>2.2</org.apache.tomcat.version>
     </properties>
 
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <url>http://localhost:8080/user</url>
-                    <server>TomcatServer</server>
-                    <path>/educationProject</path>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-
-                <!--<configuration>-->
-                    <!--<descriptorRefs>-->
-                        <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
-                    <!--</descriptorRefs>-->
-                    <!--<outputDirectory>${basedir}</outputDirectory>-->
-                    <!--<finalName>server</finalName>-->
-                    <!--<appendAssemblyId>false</appendAssemblyId>-->
-                    <!--<archive>-->
-                        <!--<manifest>-->
-                            <!--<mainClass>Main</mainClass>-->
-                        <!--</manifest>-->
-                    <!--</archive>-->
-                <!--</configuration>-->
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
             </plugin>
         </plugins>
     </build>
 
-    <dependencies>
+     <dependencies>
 
-        <!--Log4j 2-->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${org.apache.logging.log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${org.apache.logging.log4j.version}</version>
-        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-war-plugin -->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-war-plugin</artifactId>-->
+            <!--<version>3.2.2</version>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api &ndash;&gt;&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>javax.servlet</groupId>-->
+            <!--<artifactId>javax.servlet-api</artifactId>-->
+            <!--<version>3.1.0</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+         <!--<dependency>-->
+             <!--<groupId>javax.servlet</groupId>-->
+             <!--<artifactId>javax.servlet-api</artifactId>-->
+             <!--<version>4.0.1</version>-->
+             <!--<scope>provided</scope>-->
+         <!--</dependency>-->
+
+
+         <!--&lt;!&ndash;Log4j 2&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.logging.log4j</groupId>-->
+            <!--<artifactId>log4j-api</artifactId>-->
+            <!--<version>${org.apache.logging.log4j.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.logging.log4j</groupId>-->
+            <!--<artifactId>log4j-core</artifactId>-->
+            <!--<version>${org.apache.logging.log4j.version}</version>-->
+        <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/org.apache.tomcat.maven/common-tomcat-maven-plugin -->
-        <dependency>
-            <groupId>org.apache.tomcat.maven</groupId>
-            <artifactId>common-tomcat-maven-plugin</artifactId>
-            <version>${org.apache.tomcat.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.tomcat.maven</groupId>-->
+            <!--<artifactId>common-tomcat-maven-plugin</artifactId>-->
+            <!--<version>${org.apache.tomcat.version}</version>-->
+        <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${com.h2database.h2.version}</version>
         </dependency>
+<!--ДЛя отладки-->
+         <!--https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.4.15.v20190215</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-webapp -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.4.15.v20190215</version>
+        </dependency>
+         <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin &ndash;&gt;-->
+         <!--<dependency>-->
+             <!--<groupId>org.eclipse.jetty</groupId>-->
+             <!--<artifactId>jetty-maven-plugin</artifactId>-->
+             <!--<version>9.4.15.v20190215</version>-->
+         <!--</dependency>-->
+
 
     </dependencies>
 
