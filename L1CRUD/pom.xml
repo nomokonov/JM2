@@ -90,6 +90,12 @@
             <artifactId>jetty-webapp</artifactId>
             <version>9.4.15.v20190215</version>
         </dependency>
+         <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+         <dependency>
+             <groupId>org.freemarker</groupId>
+             <artifactId>freemarker</artifactId>
+             <version>2.3.28</version>
+         </dependency>
 
          <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin &ndash;&gt;-->
          <!--<dependency>-->

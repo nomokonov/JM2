@@ -1,3 +1,5 @@
+import dbService.DBService;
+import dbService.DBServiceImpl;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -8,6 +10,8 @@ import servlets.ListUsers;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+
+        DBService dbService = new DBServiceImpl();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new ListUsers()), "/");
