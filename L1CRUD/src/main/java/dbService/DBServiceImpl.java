@@ -1,5 +1,7 @@
 package dbService;
 
+import dao.User;
+import dao.UserDAO;
 import org.h2.jdbcx.JdbcDataSource;
 
 import java.sql.Connection;
@@ -15,13 +17,21 @@ public class DBServiceImpl implements DBService {
         this.connection = getPostgreSQLConnection();
     }
 
+    public User getUser(long id) throws SQLException {
+        try {
+            return (new UserDAO(connection).get(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Connection getPostgreSQLConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("org.postgresql.Driver").newInstance());
             String url = "jdbc:postgresql://localhost/test";
             Properties props = new Properties();
             props.setProperty("user", "postgres");
-            props.setProperty("password", "12345_qw");
+            props.setProperty("password", "123456");
 //            props.setProperty("ssl", "true");
             Connection conn = DriverManager.getConnection(url, props);
             return conn;

@@ -3,6 +3,7 @@ package servlets;
 import dao.User;
 import dbService.DBService;
 import dbService.DBServiceImpl;
+import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -21,18 +22,22 @@ import java.util.Map;
 
 @WebServlet("/")
 public class ListUsers extends HttpServlet {
-    private static final String HTML_DIR = "templates";
+    private static final String HTML_DIR = "templates/";
 
     DBService dbService = new DBServiceImpl();
     private List<User> usersList = new ArrayList<>();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+        ClassTemplateLoader loader = new ClassTemplateLoader(
+                new ListUsers().getClass(), "/");
+        cfg.setTemplateLoader(loader);
+        cfg.setDefaultEncoding("UTF-8");
 // модель данных
         Map<String, Object> root = new HashMap<>();
         root.put("name", "Freemarker");
 // шаблон
-        Template temp = cfg.getTemplate(HTML_DIR + File.separator + "listUsers.ftl");
+        Template temp = cfg.getTemplate(HTML_DIR + "listUsers.ftl");
 
         resp.setContentType("text/html;charset=utf-8");
         PrintWriter writer = resp.getWriter();
