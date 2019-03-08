@@ -2,27 +2,48 @@ package dbService;
 
 import dao.User;
 import dao.UserDAO;
-import org.h2.jdbcx.JdbcDataSource;
 
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 public class DBServiceImpl implements DBService {
     private final Connection connection;
 
+    @Override
+    public void init() {
+        UserDAO.createTable();  // Дабы было с чем работать
+//        UserDAO.addUser(new User("User1","Pass1"));
+//        UserDAO.addUser(new User("User2","Pass2"));
+//        UserDAO.addUser(new User("User3","Pass3"));
+
+    }
+
     public DBServiceImpl() {
         this.connection = getPostgreSQLConnection();
+        UserDAO.instanceOf().setConnection(this.connection);
     }
 
     public User getUser(long id) throws SQLException {
         try {
-            return (new UserDAO(connection).get(id));
+            return (UserDAO.instanceOf().get(id));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        try {
+            return UserDAO.instanceOf().findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Connection getPostgreSQLConnection() {
@@ -62,24 +83,24 @@ public class DBServiceImpl implements DBService {
         return null;
     }
 
-    public static Connection getH2Connection() {
-        try {
-            String url = "jdbc:h2:./h2db";
-            String name = "admin";
-            String pass = "admin";
-
-            JdbcDataSource ds = new JdbcDataSource();
-            ds.setURL(url);
-            ds.setUser(name);
-            ds.setPassword(pass);
-
-            Connection connection = DriverManager.getConnection(url, name, pass);
-            return connection;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public static Connection getH2Connection() {
+//        try {
+//            String url = "jdbc:h2:./h2db";
+//            String name = "admin";
+//            String pass = "admin";
+//
+//            JdbcDataSource ds = new JdbcDataSource();
+//            ds.setURL(url);
+//            ds.setUser(name);
+//            ds.setPassword(pass);
+//
+//            Connection connection = DriverManager.getConnection(url, name, pass);
+//            return connection;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 
 }

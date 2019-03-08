@@ -11,7 +11,6 @@ import servlets.ListUsers;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        DBService dbService = new DBServiceImpl();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new ListUsers()), "/");
