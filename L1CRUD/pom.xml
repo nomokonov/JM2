@@ -39,13 +39,13 @@
         <!--</dependency>-->
 
         <!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api &ndash;&gt;&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>javax.servlet</groupId>-->
-            <!--<artifactId>javax.servlet-api</artifactId>-->
-            <!--<version>3.1.0</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+          <!--https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api-->
          <!--<dependency>-->
              <!--<groupId>javax.servlet</groupId>-->
              <!--<artifactId>javax.servlet-api</artifactId>-->
@@ -72,10 +72,16 @@
             <!--<version>${org.apache.tomcat.version}</version>-->
         <!--</dependency>-->
          <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+         <!--<dependency>-->
+             <!--<groupId>postgresql</groupId>-->
+             <!--<artifactId>postgresql</artifactId>-->
+             <!--<version>9.1-901-1.jdbc4</version>-->
+         <!--</dependency>-->
+         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
          <dependency>
-             <groupId>postgresql</groupId>
+             <groupId>org.postgresql</groupId>
              <artifactId>postgresql</artifactId>
-             <version>9.1-901-1.jdbc4</version>
+             <version>42.2.5</version>
          </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <!--<dependency>-->
@@ -85,17 +91,17 @@
         <!--</dependency>-->
 <!--ДЛя отладки-->
          <!--https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server-->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>9.4.15.v20190215</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-webapp -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>9.4.15.v20190215</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.jetty</groupId>-->
+            <!--<artifactId>jetty-server</artifactId>-->
+            <!--<version>9.4.15.v20190215</version>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-webapp &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.jetty</groupId>-->
+            <!--<artifactId>jetty-webapp</artifactId>-->
+            <!--<version>9.4.15.v20190215</version>-->
+        <!--</dependency>-->
          <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
          <dependency>
              <groupId>org.freemarker</groupId>
