@@ -27,7 +27,7 @@ public class DBServiceImpl implements DBService {
         UserDAO.instanceOf().setConnection(this.connection);
     }
 
-    public User getUser(long id) throws SQLException {
+    public User getUser(long id)  {
         try {
             return (UserDAO.instanceOf().get(id));
         } catch (SQLException e) {
@@ -44,6 +44,21 @@ public class DBServiceImpl implements DBService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void addUser(User user) throws SQLException {
+           UserDAO.addUser(user);
+    }
+
+    @Override
+    public void userUpdate(User user) throws SQLException {
+         UserDAO.updateUser( user);
+    }
+
+    @Override
+    public void deleteUser(User user) throws SQLException {
+         UserDAO.deleteUser(user);
     }
 
     public static Connection getPostgreSQLConnection() {
@@ -82,25 +97,5 @@ public class DBServiceImpl implements DBService {
         }
         return null;
     }
-
-//    public static Connection getH2Connection() {
-//        try {
-//            String url = "jdbc:h2:./h2db";
-//            String name = "admin";
-//            String pass = "admin";
-//
-//            JdbcDataSource ds = new JdbcDataSource();
-//            ds.setURL(url);
-//            ds.setUser(name);
-//            ds.setPassword(pass);
-//
-//            Connection connection = DriverManager.getConnection(url, name, pass);
-//            return connection;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
 
 }

@@ -36,7 +36,7 @@ public class UserDAO {
         });
     }
 
-    public static void addUser(User user) {
+    public static void addUser(User user) throws SQLException{
         String zpt = ",";
         StringBuilder query = new StringBuilder();
         query.append("insert into users (username, password, description) values(");
@@ -46,12 +46,27 @@ public class UserDAO {
         query.append(zpt);
         query.append("'").append(user.getDescription()).append("'");
         query.append(");");
-
-        try {
             executor.execUpdate(query.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    }
+
+    public static  void updateUser(User user) throws SQLException {
+        String zpt = ",";
+        StringBuilder query = new StringBuilder();
+        query.append("update  users  set (username, password, description) = (");
+        query.append("'").append(user.getName()).append("'");
+        query.append(zpt);
+        query.append("'").append(user.getPassword()).append("'");
+        query.append(zpt);
+        query.append("'").append(user.getDescription()).append("'");
+        query.append(") where id=").append(user.getId()).append(";");
+        executor.execUpdate(query.toString());
+    }
+
+    public static  void deleteUser(User user) throws SQLException {
+        StringBuilder query = new StringBuilder();
+        query.append("delete from  users   where id=")
+                .append(user.getId()).append(";");
+         executor.execUpdate(query.toString());
     }
 
     public static void createTable() {
