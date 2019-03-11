@@ -2,11 +2,8 @@ package dao;
 
 import dbService.executor.Executor;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
