@@ -1,15 +1,12 @@
 package servlet;
 
-import dao.UserDAOImpl;
-import model.User;
-import service.DBService;
-import service.DBServiceImpl;
-import service.UserService;
-import service.UserServiceImpl;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import model.User;
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,18 +24,11 @@ import java.util.Map;
 @WebServlet("/*")
 public class ListUsers extends HttpServlet {
     private static final String HTML_DIR = "templates/";
-    private UserService userService;
-
-    public ListUsers() {
-        userService = new UserServiceImpl(new UserDAOImpl(new DBServiceImpl()));   //Ацкая сторка  как от нее избавиться?
-
-    }
+    private UserService userService = UserServiceImpl.getUserService();
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         // create table 'users" if not exist
-
-
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -3,6 +3,7 @@ package dao;
 import executor.Executor;
 import model.User;
 import service.DBService;
+import service.DBServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl implements   UserDAO {
+    private DBService dbService = DBServiceImpl.getDBService();
     private  Connection connection;
     private  Executor executor;
 
-    public UserDAOImpl(DBService dbService) {
+    public UserDAOImpl() {
         this.connection = dbService.getConnection();
         this.executor = new Executor(connection);
     }

@@ -1,11 +1,23 @@
 package service;
 
 import dao.UserDAO;
+import dao.UserDAOImpl;
 import model.User;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private UserDAO userDAO;
+    private UserDAO userDAO = new UserDAOImpl();
+    private static UserServiceImpl userService;
+
+    private UserServiceImpl() {
+    }
+
+    public static UserServiceImpl getUserService(){
+        if ( userService == null ){
+            userService = new UserServiceImpl();
+        }
+        return userService;
+    }
 
     @Override
     public void init() {
@@ -13,10 +25,6 @@ public class UserServiceImpl implements UserService {
 //        UserDAOImpl.save(new User("User1","Pass1"));
 //        UserDAOImpl.save(new User("User2","Pass2"));
 //        UserDAOImpl.save(new User("User3","Pass3"));
-    }
-
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
     }
 
     public User getUser(long id) {
