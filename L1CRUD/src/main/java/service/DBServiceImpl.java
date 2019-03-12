@@ -8,6 +8,7 @@ import java.util.Properties;
 
 public class DBServiceImpl implements DBService{
     private final Connection connection;
+    private DBServiceImpl dbService;
 
     public DBServiceImpl() {
         this.connection = getPostgreSQLConnection();;
