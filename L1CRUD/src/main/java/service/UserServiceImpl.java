@@ -1,7 +1,7 @@
-package dbService;
+package service;
 
-import dao.User;
-import dao.UserDAO;
+import model.User;
+import dao.UserDAOImpl;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -10,26 +10,26 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-public class DBServiceImpl implements DBService {
+public class UserServiceImpl implements UserService {
     private final Connection connection;
 
     @Override
     public void init() {
-        UserDAO.createTable();  // Дабы было с чем работать
-//        UserDAO.addUser(new User("User1","Pass1"));
-//        UserDAO.addUser(new User("User2","Pass2"));
-//        UserDAO.addUser(new User("User3","Pass3"));
+        UserDAOImpl.createTable();  // Дабы было с чем работать
+//        UserDAOImpl.save(new User("User1","Pass1"));
+//        UserDAOImpl.save(new User("User2","Pass2"));
+//        UserDAOImpl.save(new User("User3","Pass3"));
 
     }
 
-    public DBServiceImpl() {
+    public UserServiceImpl() {
         this.connection = getPostgreSQLConnection();
-        UserDAO.instanceOf().setConnection(this.connection);
+        UserDAOImpl.instanceOf().setConnection(this.connection);
     }
 
     public User getUser(long id)  {
         try {
-            return (UserDAO.instanceOf().get(id));
+            return (UserDAOImpl.instanceOf().findById(id));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class DBServiceImpl implements DBService {
     @Override
     public List<User> getUsers() {
         try {
-            return UserDAO.instanceOf().findAll();
+            return UserDAOImpl.instanceOf().findAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,17 +48,17 @@ public class DBServiceImpl implements DBService {
 
     @Override
     public void addUser(User user) throws SQLException {
-           UserDAO.addUser(user);
+           UserDAOImpl.save(user);
     }
 
     @Override
     public void userUpdate(User user) throws SQLException {
-         UserDAO.updateUser( user);
+         UserDAOImpl.update( user);
     }
 
     @Override
     public void deleteUser(User user) throws SQLException {
-         UserDAO.deleteUser(user);
+         UserDAOImpl.delete(user);
     }
 
     public static Connection getPostgreSQLConnection() {

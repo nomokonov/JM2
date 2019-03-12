@@ -1,11 +1,11 @@
-package dbService;
+package service;
 
-import dao.User;
+import model.User;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface DBService {
+public interface UserService {
      void init();
      List<User> getUsers();
      User getUser(long id);

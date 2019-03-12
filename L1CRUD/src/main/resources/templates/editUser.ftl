@@ -27,7 +27,7 @@
     <h3>For deleting user press button</h3>
            <form action="deleteuser" method="post">
                <input type="hidden"  name="id" id="Id"  value="<#if user??>${user.id}</#if>">
-               <button type="submit" class="btn btn-danger">Delete user</button>
+               <button type="submit" class="btn btn-danger btn-lg btn-block">Delete user</button>
            </form>
     </#if>
 

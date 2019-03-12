@@ -1,9 +1,19 @@
-package dao;
+package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
     private long id;
+    @Column(name = "username")
     private String name;
+
     private String password;
     private String description;
 

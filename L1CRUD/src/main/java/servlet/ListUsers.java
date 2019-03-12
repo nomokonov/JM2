@@ -1,8 +1,8 @@
-package servlets;
+package servlet;
 
-import dao.User;
-import dbService.DBService;
-import dbService.DBServiceImpl;
+import model.User;
+import service.UserService;
+import service.UserServiceImpl;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -24,13 +24,13 @@ import java.util.Map;
 @WebServlet("/*")
 public class ListUsers extends HttpServlet {
     private static final String HTML_DIR = "templates/";
-    private DBService dbService;
+    private UserService userService;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         // create table 'users" if not exist
-        dbService = new DBServiceImpl();
-        dbService.init();
+        userService = new UserServiceImpl();
+        userService.init();
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -49,13 +49,13 @@ public class ListUsers extends HttpServlet {
 //            List users
             case "/":
                 root.put("title", "User list");
-                List<User> userList = dbService.getUsers();
+                List<User> userList = userService.getUsers();
                 root.put("users", userList);
                 temp = cfg.getTemplate(HTML_DIR + "listUsers.ftl");
                 break;
 //                New users or edit
             case "/edituser":
-                User user = dbService.getUser(Long.valueOf(req.getParameter("id")));
+                User user = userService.getUser(Long.valueOf(req.getParameter("id")));
                 root.put("title", "Edit user");
                 root.put("user", user);
                 root.put("action", "saveuser");
@@ -89,7 +89,7 @@ public class ListUsers extends HttpServlet {
         switch (pathInfo) {
             case "/adduser":
                 try {
-                    dbService.addUser(new User(username, password, description));
+                    userService.addUser(new User(username, password, description));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -97,16 +97,16 @@ public class ListUsers extends HttpServlet {
             case "/saveuser":
                 long id = Long.valueOf( req.getParameter("id"));
                 try {
-                    dbService.userUpdate(new User(id, username, password, description));
+                    userService.userUpdate(new User(id, username, password, description));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 break;
             case "/deleteuser":
-                User user = dbService.getUser(Long.valueOf( req.getParameter("id")));
+                User user = userService.getUser(Long.valueOf( req.getParameter("id")));
                 if (user != null) {
                     try {
-                        dbService.deleteUser(user);
+                        userService.deleteUser(user);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
