@@ -9,7 +9,6 @@ import service.UserService;
 import service.UserServiceImpl;
 import util.ConfigFreemaker;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,23 +18,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet("")
-public class ListUsers extends HttpServlet {
+@WebServlet(urlPatterns = {"/newuser", "/adduser"})
+public class NewUser extends HttpServlet {
 
+    private static final String HTML_DIR = "templates/";
     private UserService userService = UserServiceImpl.getUserService();
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Map<String, Object> root = new HashMap<>();
-
-        root.put("title", "User list");
-        List<User> userList = userService.getUsers();
-        root.put("users", userList);
-        Template temp = ConfigFreemaker.getConfiguration().getTemplate("listUsers.ftl");
-
+        root.put("title", "New user");
+        root.put("action", "adduser");
+        Template temp = ConfigFreemaker.getConfiguration().getTemplate("editUser.ftl");
         resp.setContentType("text/html;charset=utf-8");
         PrintWriter writer = resp.getWriter();
         try {
@@ -45,8 +42,22 @@ public class ListUsers extends HttpServlet {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
-
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        String description = req.getParameter("description");
+
+        try {
+            userService.addUser(new User(username, password, description));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String path = req.getContextPath() + "/";
+        resp.sendRedirect(path);
+    }
 
 }

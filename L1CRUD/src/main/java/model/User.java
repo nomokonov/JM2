@@ -10,11 +10,13 @@ import javax.persistence.Table;
 public class User {
 
     @Id
+    @Column(name = "id")
     private long id;
     @Column(name = "username")
     private String name;
-
+    @Column(name = "password")
     private String password;
+    @Column(name = "description")
     private String description;
 
     public User(long id, String name, String password, String description) {

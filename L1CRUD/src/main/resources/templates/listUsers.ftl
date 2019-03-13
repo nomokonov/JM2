@@ -7,7 +7,7 @@
     <form action="newuser">
       <button type="submit" class="btn btn-primary">Add user</button>
     </form>
-
+<p></p>
     <#list users>
         <div class="list-group">
         <#items as user>

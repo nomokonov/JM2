@@ -7,15 +7,12 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO = new UserDAOImpl();
-    private static UserServiceImpl userService;
+    private static UserServiceImpl userService = new UserServiceImpl();
 
     private UserServiceImpl() {
     }
 
     public static UserServiceImpl getUserService(){
-        if ( userService == null ){
-            userService = new UserServiceImpl();
-        }
         return userService;
     }
 

@@ -8,13 +8,10 @@ import java.util.Properties;
 
 public class DBServiceImpl implements DBService{
     private final Connection connection;
-    private static DBServiceImpl dbService;
+    private static DBServiceImpl dbService = new DBServiceImpl();
 
     public static DBServiceImpl getDBService(){
-        if ( dbService == null ){
-            dbService = new DBServiceImpl();
-        }
-        return dbService;
+          return dbService;
     }
 
     private DBServiceImpl() {
