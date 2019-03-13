@@ -3,16 +3,17 @@ package service;
 import dao.UserDAO;
 import dao.UserDAOImpl;
 import model.User;
+
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private UserDAO userDAO = new UserDAOImpl();
+    private UserDAO userDAO = UserDAOImpl.getUserDAO();
     private static UserServiceImpl userService = new UserServiceImpl();
 
     private UserServiceImpl() {
     }
 
-    public static UserServiceImpl getUserService(){
+    public static UserServiceImpl getUserService() {
         return userService;
     }
 

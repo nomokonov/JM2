@@ -6,16 +6,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DBServiceImpl implements DBService{
+public class DBServiceImpl implements DBService {
     private final Connection connection;
     private static DBServiceImpl dbService = new DBServiceImpl();
 
-    public static DBServiceImpl getDBService(){
-          return dbService;
+    public static DBServiceImpl getDBService() {
+        return dbService;
     }
 
     private DBServiceImpl() {
-        this.connection = getPostgreSQLConnection();;
+        this.connection = getPostgreSQLConnection();
+        ;
     }
 
     @Override

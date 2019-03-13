@@ -22,13 +22,11 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = {"/newuser", "/adduser"})
 public class NewUser extends HttpServlet {
-
     private static final String HTML_DIR = "templates/";
     private UserService userService = UserServiceImpl.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         Map<String, Object> root = new HashMap<>();
         root.put("title", "New user");
         root.put("action", "adduser");
@@ -46,11 +44,9 @@ public class NewUser extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String description = req.getParameter("description");
-
         try {
             userService.addUser(new User(username, password, description));
         } catch (SQLException e) {

@@ -1,7 +1,5 @@
 package servlet;
 
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import model.User;
@@ -21,16 +19,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(urlPatterns = {"/edituser", "/saveuser"})
-public class EditUser   extends HttpServlet {
-
-    private static final String HTML_DIR = "templates/";
+public class EditUser extends HttpServlet {
     private UserService userService = UserServiceImpl.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         Map<String, Object> root = new HashMap<>();
-
         User user = userService.getUser(Long.valueOf(req.getParameter("id")));
         root.put("title", "Edit user");
         root.put("user", user);
@@ -50,18 +44,15 @@ public class EditUser   extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String description = req.getParameter("description");
-
-                long id = Long.valueOf(req.getParameter("id"));
-                try {
-                    userService.userUpdate(new User(id, username, password, description));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
+        long id = Long.valueOf(req.getParameter("id"));
+        try {
+            userService.userUpdate(new User(id, username, password, description));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         String path = req.getContextPath() + "/";
         resp.sendRedirect(path);
     }

@@ -6,23 +6,29 @@ import service.DBService;
 import service.DBServiceImpl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements   UserDAO {
+public class UserDAOImpl implements UserDAO {
+    private static UserDAOImpl userDAO = new UserDAOImpl();
     private DBService dbService = DBServiceImpl.getDBService();
-    private  Connection connection;
-    private  Executor executor;
+    private Connection connection;
+    private Executor executor;
 
-    public UserDAOImpl() {
+    private UserDAOImpl() {
         this.connection = dbService.getConnection();
         this.executor = new Executor(connection);
     }
 
-    public User findById(long id)  {
+    public static UserDAOImpl getUserDAO() {
+        return userDAO;
+    }
+
+    public User findById(long id) {
         try {
-            return executor.execQuery("select * from users where id=" + id, result -> {
+            return executor.execQuery("SELECT * FROM users WHERE id=" + id, result -> {
                 result.next();
                 return new User(result.getLong(1), result.getString(2),
                         result.getString(3), result.getString(4));
@@ -33,53 +39,44 @@ public class UserDAOImpl implements   UserDAO {
         return null;
     }
 
-    public void save(User user)  {
-        String zpt = ",";
-        StringBuilder query = new StringBuilder();
-        query.append("insert into users (username, password, description) values(");
-        query.append("'").append(user.getName()).append("'");
-        query.append(zpt);
-        query.append("'").append(user.getPassword()).append("'");
-        query.append(zpt);
-        query.append("'").append(user.getDescription()).append("'");
-        query.append(");");
-        try {
-            executor.execUpdate(query.toString());
+    public void save(User user) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(
+                             "INSERT INTO users (username, password, description) values(?, ? , ?)")) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getDescription());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public  void update(User user)  {
-        String zpt = ",";
-        StringBuilder query = new StringBuilder();
-        query.append("update  users  set (username, password, description) = (");
-        query.append("'").append(user.getName()).append("'");
-        query.append(zpt);
-        query.append("'").append(user.getPassword()).append("'");
-        query.append(zpt);
-        query.append("'").append(user.getDescription()).append("'");
-        query.append(") where id=").append(user.getId()).append(";");
-        try {
-            executor.execUpdate(query.toString());
+    public void update(User user) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(
+                             "UPDATE  USERS  SET (username, password, description) = (?, ?, ?) WHERE id=?")) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getDescription());
+            preparedStatement.setLong(4, user.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public  void delete(User user)  {
-        StringBuilder query = new StringBuilder();
-        query.append("delete from  users   where id=")
-                .append(user.getId()).append(";");
-        try {
-            executor.execUpdate(query.toString());
+    public void delete(User user) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM  users   WHERE id=?")) {
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public  void createTable() {
-
+    public void createTable() {
         try {
             executor.execUpdate("CREATE TABLE IF NOT EXISTS users(" +
                     "id    SERIAL PRIMARY KEY," +
@@ -92,12 +89,11 @@ public class UserDAOImpl implements   UserDAO {
         }
     }
 
-    public List<User> findAll()  {
+    public List<User> findAll() {
         try {
-            return executor.execQuery("select * from users;", result -> {
+            return executor.execQuery("SELECT * FROM users;", result -> {
                 List<User> list = new ArrayList<>();
                 while (result.next()) {
-
                     list.add(new User(result.getLong(1),
                             result.getString(2),
                             result.getString(3),
@@ -109,7 +105,6 @@ public class UserDAOImpl implements   UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }
