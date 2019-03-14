@@ -11,7 +11,6 @@ public class ConfigFreemaker {
         //First loader
         ClassTemplateLoader classLoader = new ClassTemplateLoader(
                 new ConfigFreemaker().getClass(), "/templates");
-
         //Set to Configuration
         configuration.setTemplateLoader(classLoader);
         configuration.setDefaultEncoding("UTF-8");

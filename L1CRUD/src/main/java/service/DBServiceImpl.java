@@ -16,7 +16,6 @@ public class DBServiceImpl implements DBService {
 
     private DBServiceImpl() {
         this.connection = getPostgreSQLConnection();
-        ;
     }
 
     @Override
