@@ -19,6 +19,9 @@ public class User {
     @Column(name = "description")
     private String description;
 
+    public User() {
+    }
+
     public User(long id, String name, String password, String description) {
         this.id = id;
         this.name = name;

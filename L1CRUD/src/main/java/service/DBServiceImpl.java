@@ -1,5 +1,12 @@
 package service;
 
+import model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import util.HibernateUtil;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -10,18 +17,28 @@ public class DBServiceImpl implements DBService {
     private final Connection connection;
     private static DBServiceImpl dbService = new DBServiceImpl();
 
+    private static final String hibernate_show_sql = "true";
+    private static final String hibernate_hbm2ddl_auto = "create";
+    private final SessionFactory sessionFactory;
+
+
     public static DBServiceImpl getDBService() {
         return dbService;
     }
 
     private DBServiceImpl() {
         this.connection = getPostgreSQLConnection();
-        ;
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override
     public Connection getConnection() {
         return connection;
+    }
+
+    @Override
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
     private static Connection getPostgreSQLConnection() {
