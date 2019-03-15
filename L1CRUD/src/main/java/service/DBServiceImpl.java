@@ -1,5 +1,8 @@
 package service;
 
+import org.hibernate.SessionFactory;
+import util.HibernateUtil;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -9,6 +12,7 @@ import java.util.Properties;
 public class DBServiceImpl implements DBService {
     private final Connection connection;
     private static DBServiceImpl dbService = new DBServiceImpl();
+    private final SessionFactory sessionFactory;
 
     public static DBServiceImpl getDBService() {
         return dbService;
@@ -16,11 +20,17 @@ public class DBServiceImpl implements DBService {
 
     private DBServiceImpl() {
         this.connection = getPostgreSQLConnection();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override
     public Connection getConnection() {
         return connection;
+    }
+
+    @Override
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
     private static Connection getPostgreSQLConnection() {
