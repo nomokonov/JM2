@@ -5,7 +5,7 @@ import model.User;
 import java.util.List;
 
 public interface UserDAO {
-    void createTable();
+//    void createTable(); Старое наследие
 
     User findById(long id);
 

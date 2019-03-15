@@ -17,14 +17,6 @@ public class UserServiceImpl implements UserService {
         return userService;
     }
 
-    @Override
-    public void init() {
-        userDAO.createTable();  // Дабы было с чем работать
-//        UserDAOImpl.save(new User("User1","Pass1"));
-//        UserDAOImpl.save(new User("User2","Pass2"));
-//        UserDAOImpl.save(new User("User3","Pass3"));
-    }
-
     public User getUser(long id) {
         return (userDAO.findById(id));
     }
