@@ -6,22 +6,18 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class UserDaoFactoryImpl implements UserDaoFactory{
-    @Override
-    public UserDao createUserDaoHibernate() {
+
+    private UserDao createUserDaoHibernate() {
         return UserDaoHibernateImpl.getInstance();
     }
 
-    @Override
-    public UserDao createUserDaoJdbc() {
+    private UserDao createUserDaoJdbc() {
         return UserDaoJdbcImpl.getInstance();
     }
 
     @Override
     public UserDao createUserDaoByProps(String file){
-
         Properties properties = getProperties(file);
-
-        ;
         switch (properties.getProperty("user.dao")){
             case "UserDaoHibernateImpl":
                 return createUserDaoHibernate();
