@@ -1,18 +1,21 @@
 package service;
 
-import dao.UserDAO;
-import dao.UserDAOImpl;
-import dao.UserHibernateDAOImpl;
+import dao.UserDao;
+import dao.UserDaoFactory;
+import dao.UserDaoFactoryImpl;
 import model.User;
 
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private UserDAO userDAO = UserHibernateDAOImpl.getUserDAO();
-//    private UserDAO userDAO = UserDAOImpl.getUserDAO();
+    private UserDaoFactory userDaoFactory = new UserDaoFactoryImpl();
+    private UserDao userDAO;
+//    private UserDao userDAO = UserDaoJdbcImpl.getInstance();
     private static UserServiceImpl userService = new UserServiceImpl();
 
     private UserServiceImpl() {
+
+        userDAO = userDaoFactory.createUserDaoByProps("userdao.properties");
     }
 
     public static UserServiceImpl getUserService() {

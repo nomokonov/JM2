@@ -1,18 +1,17 @@
 package service;
 
 import org.hibernate.SessionFactory;
-import util.HibernateUtil;
+import util.DBHelper;
 
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DBServiceImpl implements DBService {
     private final Connection connection;
     private static DBServiceImpl dbService = new DBServiceImpl();
-    private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory = DBHelper.getInstance().getSessionFactory();
 
     public static DBServiceImpl getDBService() {
         return dbService;
@@ -20,7 +19,6 @@ public class DBServiceImpl implements DBService {
 
     private DBServiceImpl() {
         this.connection = getPostgreSQLConnection();
-        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override
@@ -34,19 +32,7 @@ public class DBServiceImpl implements DBService {
     }
 
     private static Connection getPostgreSQLConnection() {
-        try {
-            DriverManager.registerDriver((Driver) Class.forName("org.postgresql.Driver").newInstance());
-            String url = "jdbc:postgresql://localhost/test";
-            Properties props = new Properties();
-            props.setProperty("user", "postgres");
-            props.setProperty("password", "123456");
-//            props.setProperty("ssl", "true");
-            Connection conn = DriverManager.getConnection(url, props);
-            return conn;
-        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+      return DBHelper.getInstance().getConnection();
     }
 
     @SuppressWarnings("UnusedDeclaration")

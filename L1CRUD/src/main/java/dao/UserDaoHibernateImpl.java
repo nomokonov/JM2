@@ -8,14 +8,14 @@ import service.DBServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserHibernateDAOImpl implements UserDAO {
-    private static UserHibernateDAOImpl userDAO = new UserHibernateDAOImpl();
+public class UserDaoHibernateImpl implements UserDao {
+    private static UserDaoHibernateImpl userDAO = new UserDaoHibernateImpl();
     private SessionFactory sessionFactory = DBServiceImpl.getDBService().getSessionFactory();
 
-    private UserHibernateDAOImpl() {
+    private UserDaoHibernateImpl() {
     }
 
-    public static UserHibernateDAOImpl getUserDAO() {
+    public static UserDaoHibernateImpl getInstance() {
         return userDAO;
     }
 

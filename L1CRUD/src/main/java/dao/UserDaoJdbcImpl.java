@@ -11,18 +11,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
-    private static UserDAOImpl userDAO = new UserDAOImpl();
+public class UserDaoJdbcImpl implements UserDao {
+    private static UserDaoJdbcImpl userDAO = new UserDaoJdbcImpl();
     private DBService dbService = DBServiceImpl.getDBService();
     private Connection connection;
     private Executor executor;
 
-    private UserDAOImpl() {
+    private UserDaoJdbcImpl() {
         this.connection = dbService.getConnection();
         this.executor = new Executor(connection);
     }
 
-    public static UserDAOImpl getUserDAO() {
+    public static UserDaoJdbcImpl getInstance() {
         return userDAO;
     }
 

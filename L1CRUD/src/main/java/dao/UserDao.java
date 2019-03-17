@@ -4,7 +4,7 @@ import model.User;
 
 import java.util.List;
 
-public interface UserDAO {
+public interface UserDao {
 //    void createTable(); Старое наследие
 
     User findById(long id);
