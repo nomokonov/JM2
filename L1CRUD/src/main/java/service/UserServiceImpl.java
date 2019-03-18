@@ -1,8 +1,8 @@
 package service;
 
 import dao.UserDao;
-import dao.UserDaoFactory;
-import dao.UserDaoFactoryImpl;
+import daofactory.UserDaoFactory;
+import daofactory.UserDaoFactoryImpl;
 import model.User;
 
 import java.util.List;

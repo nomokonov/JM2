@@ -1,8 +1,10 @@
-package dao;
+package daofactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import dao.UserDao;
+import dao.UserDaoHibernateImpl;
+import dao.UserDaoJdbcImpl;
+import util.PropertiesHelper;
+
 import java.util.Properties;
 
 public class UserDaoFactoryImpl implements UserDaoFactory{
@@ -17,7 +19,7 @@ public class UserDaoFactoryImpl implements UserDaoFactory{
 
     @Override
     public UserDao createUserDaoByProps(String file){
-        Properties properties = getProperties(file);
+        Properties properties = PropertiesHelper.getInstance().getProperties(file);
         switch (properties.getProperty("user.dao")){
             case "UserDaoHibernateImpl":
                 return createUserDaoHibernate();
@@ -26,19 +28,6 @@ public class UserDaoFactoryImpl implements UserDaoFactory{
             default:
                 return createUserDaoHibernate();
         }
-    }
-
-    private Properties getProperties(String file){
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        File configFile = new File(classLoader.getResource(file).getFile());
-        Properties properties = new Properties();
-        try {
-            FileInputStream fileInputStream = new FileInputStream(configFile);
-            properties.load(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
     }
 
 }

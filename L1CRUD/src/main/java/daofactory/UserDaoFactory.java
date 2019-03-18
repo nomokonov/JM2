@@ -1,4 +1,6 @@
-package dao;
+package daofactory;
+
+import dao.UserDao;
 
 public interface UserDaoFactory {
     UserDao createUserDaoByProps(String file);
