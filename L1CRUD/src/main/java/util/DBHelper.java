@@ -54,14 +54,12 @@ public class DBHelper {
 
     public Connection getConnection() {
         if (connection == null) {
+            Properties properties = PropertiesHelper.getInstance().getProperties("jdbc.properties");
             try {
-                DriverManager.registerDriver((Driver) Class.forName("org.postgresql.Driver").newInstance());
-                String url = "jdbc:postgresql://localhost/test";
-                Properties props = new Properties();
-                props.setProperty("user", "postgres");
-                props.setProperty("password", "123456");
+                DriverManager.registerDriver((Driver) Class.forName(properties.getProperty("jdbc.driver_class")).newInstance());
+                String url = properties.getProperty("jdbc.url"); //"jdbc:postgresql://localhost/test";
 //            props.setProperty("ssl", "true");
-                connection = DriverManager.getConnection(url, props);
+                connection = DriverManager.getConnection(url, properties);
                 return connection;
             } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                 e.printStackTrace();
