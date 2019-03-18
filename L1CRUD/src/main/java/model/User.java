@@ -1,15 +1,13 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")
     private long id;
     @Column(name = "username")
@@ -18,6 +16,7 @@ public class User {
     private String password;
     @Column(name = "description")
     private String description;
+    private String role;
 
     public User() {
     }
@@ -72,5 +71,11 @@ public class User {
         this.description = description;
     }
 
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
