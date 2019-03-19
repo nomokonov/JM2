@@ -1,15 +1,20 @@
 package Filter;
 
 import model.User;
+import org.hibernate.Session;
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = {"/user","/admin"})
 public class Authorization implements Filter {
-    private static User user;
+    private UserService userService = UserServiceImpl.getUserService();
+    private User user;
 
     public Authorization() {
     }
@@ -27,6 +32,8 @@ public class Authorization implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
+           user = (User) req.getSession().getAttribute("loginUser");
+
         if (user != null) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -36,15 +43,9 @@ public class Authorization implements Filter {
             dispatcher.forward(servletRequest, servletResponse);
             return;
         }
-//        System.out.println("#INFO " + new Date() + " - ServletPath :" + servletPath //
-//                + ", URL =" + req.getRequestURL());
-
-        // Разрешить request продвигаться дальше. (Перейти данный Filter).
-//        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
     public void destroy() {
-        System.out.println("Filter destroy!");
     }
 }

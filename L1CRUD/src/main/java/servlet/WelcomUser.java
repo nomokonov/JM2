@@ -1,7 +1,5 @@
 package servlet;
 
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import model.User;
@@ -16,22 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"/newuser", "/adduser"})
-public class NewUser extends HttpServlet {
-    private static final String HTML_DIR = "templates/";
+@WebServlet(urlPatterns = {"/user"})
+public class WelcomUser extends HttpServlet {
     private UserService userService = UserServiceImpl.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
-        root.put("title", "New user");
-        root.put("action", "adduser");
-        Template temp = ConfigFreemaker.getConfiguration().getTemplate("editUser.ftl");
+        Template temp = ConfigFreemaker.getConfiguration().getTemplate("welcomeuser.ftl");
         resp.setContentType("text/html;charset=utf-8");
+        User user = (User) req.getSession().getAttribute("loginUser");
+        root.put("user", user);
         PrintWriter writer = resp.getWriter();
         try {
             temp.process(root, writer);
@@ -41,19 +37,4 @@ public class NewUser extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String description = req.getParameter("description");
-        try {
-            userService.addUser(new User(username, password, description));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        String path = req.getContextPath() + "/";
-        resp.sendRedirect(path);
-    }
-
 }

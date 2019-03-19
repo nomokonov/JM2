@@ -1,5 +1,5 @@
 <#macro page>
-<!DOCTYPE html>
+    <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -10,7 +10,11 @@
     </head>
     <body>
     <div class="container mt-5">
-    <#nested>
+        <#if user??>${user.name}</#if>
+
+    </div>
+    <div class="container mt-5">
+        <#nested>
     </div>
 
     <!-- Optional JavaScript -->

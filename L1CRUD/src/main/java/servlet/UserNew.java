@@ -1,5 +1,7 @@
 package servlet;
 
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import model.User;
@@ -18,19 +20,17 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"/edituser", "/saveuser"})
-public class EditUser extends HttpServlet {
+@WebServlet(urlPatterns = {"/admin/newuser", "/admin/adduser"})
+public class UserNew extends HttpServlet {
+    private static final String HTML_DIR = "templates/";
     private UserService userService = UserServiceImpl.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
-        User user = userService.getUser(Long.valueOf(req.getParameter("id")));
-        root.put("title", "Edit user");
-        root.put("user", user);
-        root.put("action", "saveuser");
+        root.put("title", "New user");
+        root.put("action", "adduser");
         Template temp = ConfigFreemaker.getConfiguration().getTemplate("editUser.ftl");
-
         resp.setContentType("text/html;charset=utf-8");
         PrintWriter writer = resp.getWriter();
         try {
@@ -47,13 +47,15 @@ public class EditUser extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String description = req.getParameter("description");
-        long id = Long.valueOf(req.getParameter("id"));
+        String role = req.getParameter("role");
         try {
-            userService.userUpdate(new User(id, username, password, description));
+            User user = new User(username, password, description);
+            user.setRole(role);
+            userService.addUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String path = req.getContextPath() + "/";
+        String path = req.getContextPath() + "/admin";
         resp.sendRedirect(path);
     }
 

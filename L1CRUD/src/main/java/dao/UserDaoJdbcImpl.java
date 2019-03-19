@@ -30,8 +30,24 @@ public class UserDaoJdbcImpl implements UserDao {
         try {
             return executor.execQuery("SELECT * FROM users WHERE id=" + id, result -> {
                 result.next();
-                return new User(result.getLong(1), result.getString(2),
+                User user = new User(result.getLong(1), result.getString(2),
                         result.getString(3), result.getString(4));
+                user.setRole(result.getString(5));
+                return user;
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public User findByName(String username) {
+        try {
+            return executor.execQuery("SELECT * FROM users WHERE username=" + username, result -> {
+                result.next();
+                User user = new User(result.getLong(1), result.getString(2),
+                        result.getString(3), result.getString(4));
+                user.setRole(result.getString(5));
+                return user;
             });
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,10 +58,11 @@ public class UserDaoJdbcImpl implements UserDao {
     public void save(User user) {
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(
-                             "INSERT INTO users (username, password, description) values(?, ? , ?)")) {
+                             "INSERT INTO users (username, password, description) values(?, ? , ?, ?)")) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getDescription());
+            preparedStatement.setString(4, user.getRole());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

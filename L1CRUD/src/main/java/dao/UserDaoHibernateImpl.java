@@ -3,10 +3,13 @@ package dao;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import service.DBServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hibernate.loader.Loader.SELECT;
 
 public class UserDaoHibernateImpl implements UserDao {
     private static UserDaoHibernateImpl userDAO = new UserDaoHibernateImpl();
@@ -21,6 +24,21 @@ public class UserDaoHibernateImpl implements UserDao {
 
     public User findById(long id) {
         return sessionFactory.openSession().get(User.class, id);
+    }
+
+    public User findByName(String username) {
+        Session session = sessionFactory.openSession();
+        String hql = "FROM User where name = :paramName";
+        Query query = session.createQuery(hql);
+        query.setParameter("paramName", username);
+        List<User> users = query.list();
+        session.close();
+        if ( users.size() ==0 ){
+            return null;
+        } else {
+            return users.get(0);
+        }
+
     }
 
     public void save(User user) {

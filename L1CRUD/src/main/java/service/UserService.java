@@ -10,7 +10,9 @@ public interface UserService {
 
     List<User> getUsers();
 
-    User getUser(long id);
+    User getUserById(long id);
+
+    User getUserByName(String username);
 
     void addUser(User user) throws SQLException;
 

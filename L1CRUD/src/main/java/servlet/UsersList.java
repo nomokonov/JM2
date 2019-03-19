@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("")
-public class ListUsers extends HttpServlet {
+@WebServlet("/admin")
+public class UsersList extends HttpServlet {
 
     private UserService userService = UserServiceImpl.getUserService();
 

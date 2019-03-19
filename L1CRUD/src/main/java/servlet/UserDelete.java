@@ -12,21 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/deleteuser")
-public class DeleteUser extends HttpServlet {
+@WebServlet("/admin/deleteuser")
+public class UserDelete extends HttpServlet {
     private UserService userService = UserServiceImpl.getUserService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        User user = userService.getUser(Long.valueOf(req.getParameter("id")));
+        User user = userService.getUserById(Long.valueOf(req.getParameter("id")));
         if (user != null) {
             try {
                 userService.deleteUser(user);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            String path = req.getContextPath() + "/";
+            String path = req.getContextPath() + "/admin";
             resp.sendRedirect(path);
         }
 
