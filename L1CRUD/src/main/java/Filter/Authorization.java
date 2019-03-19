@@ -1,19 +1,15 @@
 package Filter;
 
 import model.User;
-import org.hibernate.Session;
-import service.UserService;
-import service.UserServiceImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/*"})
 public class Authorization implements Filter {
-    private UserService userService = UserServiceImpl.getUserService();
     private User user;
 
     public Authorization() {
@@ -29,9 +25,8 @@ public class Authorization implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         } else {
-            RequestDispatcher dispatcher
-                    = servletRequest.getServletContext().getRequestDispatcher("/login");
-            dispatcher.forward(servletRequest, servletResponse);
+            String path = req.getContextPath() + "/login";
+            ((HttpServletResponse) servletResponse).sendRedirect(path);
             return;
         }
     }
