@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/user","/admin"})
+@WebFilter(urlPatterns = {"/*"})
 public class Authorization implements Filter {
     private UserService userService = UserServiceImpl.getUserService();
     private User user;
@@ -19,22 +19,13 @@ public class Authorization implements Filter {
     public Authorization() {
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
 
-        if (((HttpServletRequest) servletRequest).getServletPath().equals("/login")) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
-           user = (User) req.getSession().getAttribute("loginUser");
-
-        if (user != null) {
+        user = (User) req.getSession().getAttribute("loginUser");
+        if (user != null || ((HttpServletRequest) servletRequest).getServletPath().equals("/login")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         } else {
@@ -43,9 +34,5 @@ public class Authorization implements Filter {
             dispatcher.forward(servletRequest, servletResponse);
             return;
         }
-    }
-
-    @Override
-    public void destroy() {
     }
 }

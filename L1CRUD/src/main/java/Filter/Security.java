@@ -16,12 +16,6 @@ public class Security implements Filter {
     private User user;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
 
@@ -37,10 +31,5 @@ public class Security implements Filter {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }
