@@ -13,7 +13,7 @@ public interface UserService {
     User getUserById(long id);
 
 
-    void addUser(User user) throws SQLException;
+    void saveUser(User user) throws SQLException;
 
     void userUpdate(User user) throws SQLException;
 

@@ -3,7 +3,7 @@ package service;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repos.UserRepo;
+import repository.UserRepo;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) {
+    public void saveUser(User user) {
         userRepo.save(user);
     }
 
