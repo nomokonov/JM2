@@ -3,6 +3,11 @@
 <@c.page>
 
     <h2>${title}</h2>
+    <#if message??>
+        <div class="alert alert-danger" role="alert">
+            ${message}
+        </div>
+    </#if>
     <form action="${action}" method="post">
         <#if action=="saveuser">
             <input type="hidden" name="id" id="Id" value="<#if user??>${user.id}</#if>">

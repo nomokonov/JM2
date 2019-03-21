@@ -1,9 +1,9 @@
 package com.example.test.service;
 
 import com.example.test.model.User;
+import com.example.test.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.test.repository.UserRepo;
 
 import java.util.List;
 
@@ -15,6 +15,9 @@ public class UserService {
     public User getUserById(long id) {
         return userRepo.findById(id).get();
     }
+    public User getUserByName(String name){
+        return  userRepo.findUserByName(name);
+    }
 
     public List<User> getUsers() {
         return (List<User>) userRepo.findAll();
@@ -24,13 +27,11 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void userUpdate(User user) {
-        userRepo.save(user);
-    }
-
     public void deleteUser(User user) {
         userRepo.delete(user);
     }
+
+
 
 
 }

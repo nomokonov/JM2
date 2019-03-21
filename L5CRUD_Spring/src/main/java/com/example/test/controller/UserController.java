@@ -17,31 +17,69 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String listUser (Map<String,Object> model){
-        model.put("users",userService.getUsers());
+    public String listUser(Map<String, Object> model) {
+        model.put("users", userService.getUsers());
         return "listUsers";
     }
 
     @RequestMapping(value = "/newuser", method = RequestMethod.GET)
-    public String userNew (Map<String, Object> model){
+    public String userNew(Map<String, Object> model) {
         model.put("title", "New user");
         model.put("action", "adduser");
         return "editUser";
     }
-       @RequestMapping(value = "/newuser", method = RequestMethod.POST)
-    public String addUser (
-            @RequestParam(name="username") String username,
-            @RequestParam(name="password") String password,
-            @RequestParam(name="description") String description,
-            @RequestParam(name="role") String role){
 
-            userService.saveUser(new User(username,password,description,role));
-        return "redirect:/listuser";
+    @RequestMapping(value = "/adduser", method = RequestMethod.POST)
+    public String addUser(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "role") String role,
+            Map<String, Object> model) {
+
+        User userFromDB = userService.getUserByName(username);
+        if (userFromDB == null){
+            userService.saveUser(new User(username, password, description, role));
+            return "redirect:/";
+        }else{
+            model.put("title", "Editing user");
+            model.put("message","the user name is occupied " + userFromDB.getName() );
+            model.put("action","adduser");
+            model.put("user",new User(username,password,description,role));
+            return "editUser";
+        }
+    }
+
+    @RequestMapping(value = "/edituser", method = RequestMethod.GET)
+    public String listUser(
+            @RequestParam Long id,
+            Map<String, Object> model) {
+        model.put("title", "Editing user");
+        model.put("action", "saveuser");
+        model.put("user", userService.getUserById(id));
+        return "editUser";
+    }
+
+    @RequestMapping(value = "/saveuser", method = RequestMethod.POST)
+    public String addUser(
+            @RequestParam Long id,
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "role") String role) {
+
+        User userFromDB = userService.getUserById(id);
+        userFromDB.setName(username);
+        userFromDB.setPassword(password);
+        userFromDB.setDescription(description);
+        userFromDB.setRole(role);
+        userService.saveUser(userFromDB);
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
-    public String addUser (  @RequestParam("id") User user){
-            userService.deleteUser(user);
-        return "redirect:/listuser";
+    public String addUser(@RequestParam("id") User user) {
+        userService.deleteUser(user);
+        return "redirect:/";
     }
 }
