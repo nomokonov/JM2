@@ -1,12 +1,13 @@
-package controller;
+package com.example.test.controller;
 
-import model.User;
+import com.example.test.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import com.example.test.service.UserService;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 @Controller
@@ -34,24 +35,13 @@ public class UserController {
             @RequestParam(name="description") String description,
             @RequestParam(name="role") String role){
 
-        try {
             userService.saveUser(new User(username,password,description,role));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return "redirect:/listuser";
     }
 
     @RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
     public String addUser (  @RequestParam("id") User user){
-
-        try {
             userService.deleteUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return "redirect:/listuser";
     }
 }
