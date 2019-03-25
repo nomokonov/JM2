@@ -33,7 +33,6 @@ public class UserDaoHibernateImpl implements UserDao {
         } else {
             return users.get(0);
         }
-
     }
 
     public void save(User user) {
