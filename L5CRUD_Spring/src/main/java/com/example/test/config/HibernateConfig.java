@@ -27,7 +27,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.javacodegeeks.model" });
+        sessionFactory.setPackagesToScan(new String[] { "com.example.test" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -35,8 +35,8 @@ public class HibernateConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
+        dataSource.setDriverClassName(environment.getRequiredProperty("hibernate.connection.driver_class"));
+        dataSource.setUrl(environment.getRequiredProperty("hibernate.connection.url"));
         return dataSource;
     }
 
@@ -45,6 +45,9 @@ public class HibernateConfig {
         properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+        properties.put("hibernate.connection.username",environment.getRequiredProperty("hibernate.connection.username"));
+        properties.put("hibernate.connection.password",environment.getRequiredProperty("hibernate.connection.password"));
+        properties.put("hibernate.connection.driver_class",environment.getRequiredProperty("hibernate.connection.driver_class"));
         return properties;
     }
 

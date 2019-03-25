@@ -78,8 +78,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
-    public String addUser(@RequestParam("id") User user) {
-        userService.deleteUser(user);
+    public String addUser(@RequestParam long id ) {
+        User userFromDB = userService.getUserById(id);
+        userService.deleteUser(userFromDB);
         return "redirect:/";
     }
 }
