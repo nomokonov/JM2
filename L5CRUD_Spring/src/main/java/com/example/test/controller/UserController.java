@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.test.service.UserService;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -18,17 +16,7 @@ public class UserController {
 
     @GetMapping(value = "/")
     public String listUser(Map<String, Object> model) {
-//        model.put("users", userService.getUsers());
-
-        Iterator<User> iterator = userService.getUsers().iterator();
-        String listusers = "";
-        while(iterator.hasNext()) {
-            User user = iterator.next();
-           listusers += "<a href=\"edituser?id=" + user.getId() + 
-                   "\" class=\"list-group-item list-group-item-action\">" +
-                   user.getName() + "</a>";
-        }
-        model.put("listusers",listusers);
+        model.put("users", userService.getUsers());
         return "listUsers";
     }
 
