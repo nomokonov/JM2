@@ -1,31 +1,33 @@
 package com.example.test.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 @Configuration
 
 @ComponentScan("com.example.test.*")
-public class ApplicationContextConfig {
-    @Bean(name = "viewResolver")
-    public ViewResolver getViewResolver() {
-        FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
-        System.out.println("Create Bean viewResolver");
+public class ApplicationContextConfig implements WebApplicationInitializer {
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
+        appContext.register(ApplicationContextConfig.class);
+        // Dispatcher Servlet
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("SpringDispatcher",
+                new DispatcherServlet(appContext));
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("/");
+        dispatcher.setInitParameter("contextClass", appContext.getClass().getName());
+        servletContext.addListener(new ContextLoaderListener(appContext));
 
-        viewResolver.setCache(true);
-        viewResolver.setPrefix("");
-        viewResolver.setSuffix(".ftl");
-        return viewResolver;
-    }
-
-    @Bean(name = "freemarkerConfig")
-    public FreeMarkerConfigurer getFreemarkerConfig() {
-        FreeMarkerConfigurer config = new FreeMarkerConfigurer();
-        config.setTemplateLoaderPath("/WEB-INF/classes/templates");
-        return config;
     }
 }

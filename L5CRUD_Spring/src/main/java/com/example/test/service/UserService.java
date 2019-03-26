@@ -15,8 +15,9 @@ public class UserService {
     public User getUserById(long id) {
         return userDao.findById(id);
     }
-    public User getUserByName(String name){
-        return  userDao.findByName(name);
+
+    public User getUserByName(String name) {
+        return userDao.findByName(name);
     }
 
     public List<User> getUsers() {
@@ -31,7 +32,7 @@ public class UserService {
         userDao.delete(user);
     }
 
-
-
-
+    public void updateUser(User user) {
+        userDao.update(user);
+    }
 }
