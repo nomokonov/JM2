@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 @Configuration
-
 @ComponentScan("com.example.test.*")
 public class ApplicationContextConfig implements WebApplicationInitializer {
     @Override
