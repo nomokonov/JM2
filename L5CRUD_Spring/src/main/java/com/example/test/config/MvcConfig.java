@@ -14,16 +14,16 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.example.test.*")
-public class MvcConfig  {
+public class MvcConfig implements WebMvcConfigurer {
 
-
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/",
-                        "classpath:/resources/static/");
+                .addResourceLocations("/resources/static", "classpath:/static/")
+                .setCachePeriod(31556926);
     }
 
-    @Bean(name = "viewResolver")
+    @Bean
     public ViewResolver getViewResolver() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
 
@@ -33,7 +33,7 @@ public class MvcConfig  {
         return viewResolver;
     }
 
-    @Bean(name = "freemarkerConfig")
+    @Bean
     public FreeMarkerConfigurer getFreemarkerConfig() {
         FreeMarkerConfigurer config = new FreeMarkerConfigurer();
         config.setTemplateLoaderPath("/WEB-INF/classes/templates");
