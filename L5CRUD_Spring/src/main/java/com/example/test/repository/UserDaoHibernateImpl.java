@@ -7,10 +7,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoHibernateImpl implements UserDao {
     @Autowired
     UserDao userDAO;
@@ -18,11 +19,11 @@ public class UserDaoHibernateImpl implements UserDao {
     private SessionFactory sessionFactory;
 
     public User findById(long id) {
-        return sessionFactory.openSession().get(User.class, id);
+        return sessionFactory.getCurrentSession().get(User.class, id);
     }
 
     public User findByName(String username) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         String hql = "FROM User where name = :paramName";
         Query query = session.createQuery(hql);
         query.setParameter("paramName", username);
@@ -36,36 +37,25 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     public void save(User user) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.save(user);
-        session.getTransaction().commit();
-        session.close();
+
     }
 
     public void update(User user) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.update(user);
-        session.getTransaction().commit();
-        session.close();
     }
 
     public void delete(User user) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.delete(user);
-        session.getTransaction().commit();
-        session.close();
     }
 
     public List<User> findAll() {
         List<User> users;
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         users = session.createQuery("from User").list();
-        session.getTransaction().commit();
-        session.close();
         return users;
     }
 }

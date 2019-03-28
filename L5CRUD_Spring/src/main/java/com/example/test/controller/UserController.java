@@ -1,12 +1,15 @@
 package com.example.test.controller;
 
 import com.example.test.model.User;
+import com.example.test.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.test.service.UserService;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -37,13 +40,17 @@ public class UserController {
 
         User userFromDB = userService.getUserByName(username);
         if (userFromDB == null) {
-            userService.saveUser(new User(username, password, description, role));
+            User user = new User(username, password, description);
+            user.addRole(role);
+            userService.saveUser(user);
             return "redirect:/";
         } else {
             model.put("title", "Editing user");
             model.put("message", "the user name is occupied " + userFromDB.getName());
             model.put("action", "adduser");
-            model.put("user", new User(username, password, description, role));
+            User user = new User(username, password, description);
+            user.addRole(role);
+            model.put("user", user);
             return "editUser";
         }
     }
@@ -54,7 +61,9 @@ public class UserController {
             Map<String, Object> model) {
         model.put("title", "Editing user");
         model.put("action", "saveuser");
-        model.put("user", userService.getUserById(id));
+        User userfromDB = userService.getUserById(id);
+        model.put("user", userfromDB );
+        model.put("roles",userfromDB.getRoles());
         return "editUser";
     }
 
@@ -70,7 +79,7 @@ public class UserController {
         userFromDB.setName(username);
         userFromDB.setPassword(password);
         userFromDB.setDescription(description);
-        userFromDB.setRole(role);
+        userFromDB.addRole(role);
         userService.updateUser(userFromDB);
         return "redirect:/";
     }

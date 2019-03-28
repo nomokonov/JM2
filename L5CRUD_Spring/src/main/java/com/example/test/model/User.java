@@ -1,20 +1,23 @@
 package com.example.test.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "id")
     private long id;
     @Column(name = "username", nullable = false, unique = true)
     private String name;
     private String password;
     private String description;
-    private String role;
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<UserRole> roles = new ArrayList<UserRole>();
 
     public User() {
     }
@@ -32,11 +35,11 @@ public class User {
         this.description = description;
     }
 
-    public User(String name, String password, String description, String role) {
+    public User(String name, String password, String description, List<UserRole> roles) {
         this.name = name;
         this.password = password;
         this.description = description;
-        this.role = role;
+        this.roles = roles;
     }
 
     public User(String name, String password) {
@@ -76,11 +79,20 @@ public class User {
         this.description = description;
     }
 
-    public String getRole() {
-        return role;
+    public List<UserRole> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
     }
+
+    public void addRole(UserRole userRole){
+        this.roles.add(userRole);
+    }
+
+    public void addRole(String role){
+        this.addRole(new UserRole(this,role));
+    }
+
 }

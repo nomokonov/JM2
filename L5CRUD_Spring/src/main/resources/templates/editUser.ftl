@@ -25,11 +25,24 @@
         </div>
         <div class="form-group">
             <label for="Role">Role</label>
-            <select class="custom-select" id="Role" name="role"
-                    value="<#if user??>${user.role}</#if>">
-                <option value="user" selected>USER</option>
-                <option value="admin">ADMIN</option>
-            </select>
+            <#if user??>
+                <#list roles>
+                <div class="list-group">
+                    <#items as roles>
+                        <a href="edituser?id=${roles.id}" class="list-group-item list-group-item-action">${roles.role }</a>
+                    </#items>
+                    </div>
+                    <#else>
+                       <p>No roles
+                    </#list>
+                </#if>
+                <#if action=="adduser">
+                    <select class="custom-select" id="Role" name="role">
+
+                    <option value="user" selected>USER</option>
+                    <option value="admin">ADMIN</option>
+                    </select>
+                </#if>
         </div>
         <div class="form-group">
             <label for="Description">Description</label>

@@ -46,6 +46,7 @@ public class HibernateConfig {
         properties.put("hibernate.connection.username",environment.getRequiredProperty("hibernate.connection.username"));
         properties.put("hibernate.connection.password",environment.getRequiredProperty("hibernate.connection.password"));
         properties.put("hibernate.connection.driver_class",environment.getRequiredProperty("hibernate.connection.driver_class"));
+        properties.put("hibernate.hbm2ddl.auto",environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 
