@@ -25,24 +25,27 @@
         </div>
         <div class="form-group">
             <label for="Role">Role</label>
-            <#if user??>
-                <#list roles>
-                <div class="list-group">
-                    <#items as roles>
-                        <a href="edituser?id=${roles.id}" class="list-group-item list-group-item-action">${roles.role }</a>
-                    </#items>
+            <#--UserRoles bein-->
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" value="admin" name="admin"
+                               aria-label="Checkbox for following text input">
                     </div>
-                    <#else>
-                       <p>No roles
-                    </#list>
-                </#if>
-                <#if action=="adduser">
-                    <select class="custom-select" id="Role" name="role">
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox" value="Admin" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" value="user" name="user"
+                               aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox" value="User" readonly>
+            </div>
+            <#--End UserRole-->
 
-                    <option value="user" selected>USER</option>
-                    <option value="admin">ADMIN</option>
-                    </select>
-                </#if>
         </div>
         <div class="form-group">
             <label for="Description">Description</label>
