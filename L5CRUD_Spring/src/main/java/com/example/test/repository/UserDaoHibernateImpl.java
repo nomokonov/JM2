@@ -28,7 +28,6 @@ public class UserDaoHibernateImpl implements UserDao {
         Query query = session.createQuery(hql);
         query.setParameter("paramName", username);
         List<User> users = query.list();
-        session.close();
         if (users.size() == 0) {
             return null;
         } else {
