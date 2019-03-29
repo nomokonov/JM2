@@ -6,18 +6,20 @@ import javax.persistence.*;
 public class UserRole {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.IDENTITY )
     @Column(name = "id")
     private long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
-    String role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    Role role;
 
     public UserRole() {
     }
 
-    public UserRole(User user, String role){
+    public UserRole(User user, Role role){
         this.user = user;
         this.role = role;
     }
@@ -38,11 +40,11 @@ public class UserRole {
         this.user = user;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

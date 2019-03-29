@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY )
     @Column(name = "id")
     private long id;
     @Column(name = "username", nullable = false, unique = true)
@@ -91,7 +91,7 @@ public class User {
         this.roles.add(userRole);
     }
 
-    public void addRole(String role){
+    public void addRole(Role role){
         this.addRole(new UserRole(this,role));
     }
 

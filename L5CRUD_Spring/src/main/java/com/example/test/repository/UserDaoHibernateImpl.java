@@ -24,7 +24,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     public User findByName(String username) {
         Session session = sessionFactory.getCurrentSession();
-        String hql = "FROM User where name = :paramName";
+        String hql = "FROM User WHERE name = :paramName";
         Query query = session.createQuery(hql);
         query.setParameter("paramName", username);
         List<User> users = query.list();
@@ -54,7 +54,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public List<User> findAll() {
         List<User> users;
         Session session = sessionFactory.getCurrentSession();
-        users = session.createQuery("from User").list();
+        users = session.createQuery("FROM User").list();
         return users;
     }
 }

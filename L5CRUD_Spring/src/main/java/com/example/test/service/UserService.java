@@ -1,6 +1,8 @@
 package com.example.test.service;
 
+import com.example.test.model.Role;
 import com.example.test.model.User;
+import com.example.test.repository.RoleDao;
 import com.example.test.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserDao userDao;
+
 
     public User getUserById(long id) {
         return userDao.findById(id);
@@ -35,4 +38,6 @@ public class UserService {
     public void updateUser(User user) {
         userDao.update(user);
     }
+
+
 }
