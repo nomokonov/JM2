@@ -28,25 +28,28 @@
             <#--UserRoles bein-->
             <#if roles??>
             <#list roles>
-                <#items as role>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <input type="checkbox" value="${role.id}" name="listRoles"
-                                        ${user.roles?seq_contains(role.id)?string("checked", "")}
-                                        aria-label="Checkbox for following text input">
-                            </div>
+            <#items as role>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" value="${role.id}" name="listRoles"
+                                    <#if userroles??>
+                                        ${userroles?seq_contains(role.id)?string(" checked ", "")}
+                                    </#if>
+                                   aria-label="Checkbox for following text input">
                         </div>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" value="${role.role}" readonly>
                     </div>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" value="${role.role}"
+                           readonly>
+                </div>
 
-                </#items>
+            </#items>
 
-        <#else>
+            <#else>
             <p>No roles
                 </#list>
                 </#if>
-            <#--End UserRole-->
+                <#--End UserRole-->
 
         </div>
         <div class="form-group">

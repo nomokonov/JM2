@@ -1,12 +1,15 @@
 package com.example.test.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY )
@@ -16,8 +19,8 @@ public class User {
     private String name;
     private String password;
     private String description;
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<UserRole> roles = new ArrayList<UserRole>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval=true)
+    private Set<UserRole> roles = new HashSet<UserRole>();
 
     public User() {
     }
@@ -35,7 +38,7 @@ public class User {
         this.description = description;
     }
 
-    public User(String name, String password, String description, List<UserRole> roles) {
+    public User(String name, String password, String description, Set<UserRole> roles) {
         this.name = name;
         this.password = password;
         this.description = description;
@@ -79,11 +82,11 @@ public class User {
         this.description = description;
     }
 
-    public List<UserRole> getRoles() {
+    public Set<UserRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<UserRole> roles) {
+    public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
 
@@ -95,4 +98,37 @@ public class User {
         this.addRole(new UserRole(this,role));
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+        for (UserRole role : getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().getRole()));
+        }
+        return grantedAuthorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
