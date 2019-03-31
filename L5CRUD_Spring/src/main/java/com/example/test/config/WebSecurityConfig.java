@@ -1,43 +1,52 @@
 package com.example.test.config;
 
-import com.example.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan("com.example.test.*")
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserService userService;
+    UserDetailsService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder(8);
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.authorizeRequests()
-                .antMatchers("/admin/**").access("hasRole('admin')")
-                .antMatchers("/user/**").access("hasRole('user')")
-                .and().formLogin();
-//                .authorizeRequests()
-//                .antMatchers("/", "/static/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .rememberMe()
-//                .and()
-//                .logout()
-//                .permitAll();
+        http
+                .authorizeRequests()
+                .antMatchers("/",  "/static/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .rememberMe()
+                .and()
+                .logout()
+                .permitAll();
     }
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+    public void configure(AuthenticationManagerBuilder builder)
+            throws Exception {
+        builder.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
+
 }

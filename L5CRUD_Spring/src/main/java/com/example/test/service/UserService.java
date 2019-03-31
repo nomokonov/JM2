@@ -1,21 +1,14 @@
 package com.example.test.service;
 
-import com.example.test.model.Role;
 import com.example.test.model.User;
-import com.example.test.model.UserRole;
-import com.example.test.repository.RoleDao;
 import com.example.test.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -23,9 +16,9 @@ public class UserService implements UserDetailsService {
     UserDao userDao;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-        User user = userDao.findByName(s);
+        User user = userDao.findByName(name);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");

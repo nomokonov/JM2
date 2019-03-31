@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     </head>
     <body>
+    <#include "navbar.ftl">
     <div class="container mt-5">
         <#if user??>${user.name}</#if>
 
