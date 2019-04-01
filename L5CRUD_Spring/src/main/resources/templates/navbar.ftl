@@ -12,11 +12,11 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/main">Messages</a>
+                <a class="nav-link" href="/user/welcomeuser">Messages</a>
             </li>
             <#--<#if isAdmin>-->
             <li class="nav-item">
-                <a class="nav-link" href="/user">User list</a>
+                <a class="nav-link" href="/admin/listuser">User list</a>
             </li>
             <#--</#if>-->
             <#if user??>

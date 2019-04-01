@@ -29,19 +29,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/",  "/static/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .rememberMe()
-                .and()
-                .logout()
-                .permitAll();
+//        http
+//                 .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/",  "/static/**","/admin/*").permitAll()
+//                .antMatchers("/user/**").hasRole("user")
+//                .antMatchers("/admin/**").hasRole("admin")
+//                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .permitAll()
+//                .and()
+//                .rememberMe()
+//                .and()
+//                .logout()
+//                .permitAll();
+
+        http.csrf().disable();
+        http.authorizeRequests().antMatchers("/", "/login", "/static/**").permitAll();
+        http.authorizeRequests().antMatchers("user/welcome").access("hasAnyRole('user', 'admin')");
+        http.authorizeRequests().antMatchers("/admin/**").access("hasRole('admin')");
+        http.authorizeRequests().and().formLogin()//
+                .loginProcessingUrl("/j_spring_security_check") // Submit URL
+                .loginPage("/login")//
+                .defaultSuccessUrl("/user/welcome")//
+                .failureUrl("/login?error=true")//
+                .usernameParameter("username")//
+                .passwordParameter("password")
+                // Config for Logout Page
+                .and().logout();
     }
     @Override
     public void configure(AuthenticationManagerBuilder builder)

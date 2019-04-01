@@ -6,11 +6,15 @@ import com.example.test.model.UserRole;
 import com.example.test.service.RoleService;
 import com.example.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping(value = "/admin/listuser")
     public String listUser(Map<String, Object> model) {
@@ -29,9 +35,12 @@ public class UserController {
         return "listUsers";
     }
 
-    @GetMapping(value = "/user/*")
-    public String welcome(Map<String, Object> model) {
-        model.put("users", userService.getUsers());
+    @GetMapping(value = "/user/welcome")
+    public String welcome(
+           Principal user,
+                    Map<String, Object> model) {
+
+        model.put("user", user);
         return "welcomeuser";
     }
 
@@ -53,7 +62,7 @@ public class UserController {
 
         User userFromDB = userService.getUserByName(username);
         if (userFromDB == null) {
-            User user = new User(username, password, description);
+            User user = new User(username, passwordEncoder.encode(password), description);
             for (long role: roles) {
                 Role roleFromDB = roleService.getRoleById(role);
                 user.addRole(roleFromDB);
@@ -112,7 +121,7 @@ public class UserController {
     public String addUser(@RequestParam long id) {
         User userFromDB = userService.getUserById(id);
         userService.deleteUser(userFromDB);
-        return "redirect:/listuser";
+        return "redirect:/admin/listuser";
     }
 //  Authorization
     @GetMapping(value = {"/login","/"})
@@ -122,7 +131,10 @@ public class UserController {
 
 
 
-//    Вспомогательная для вывода ролей во вьюху и выбора существующих ролей  юзверя выбранного
+
+
+
+    //    Вспомогательная для вывода ролей во вьюху и выбора существующих ролей  юзверя выбранного
     private List<Long> getRolesForView(User user){
         List<Long> arr = new ArrayList<Long>();
         for (UserRole role: user.getRoles()) {

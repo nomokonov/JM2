@@ -3,7 +3,7 @@
 <@c.page>
     <h5>Login</h5>
     ${message?ifExists}
-    <form method="post" action="/login">
+    <form method="post" action="/j_spring_security_check">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-6">
