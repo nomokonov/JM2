@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @ComponentScan("com.example.test.*")
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userService;
@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().authenticated()
 //                .anyRequest().permitAll()
 //                .and()
-//                .formLogin()
+//                .formLogin()a
 //                .loginPage("/login")
 //                .permitAll()
 //                .and()
@@ -49,14 +49,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/", "/login", "/static/**").permitAll();
-        http.authorizeRequests().antMatchers("user/welcome").access("hasAnyRole('user', 'admin')");
-        http.authorizeRequests().antMatchers("/admin/**").access("hasRole('admin')");
+        http.authorizeRequests().antMatchers("/user/welcome").access("hasAnyRole('USER', 'ADMIN')");
+        http.authorizeRequests().antMatchers("/user/only").access("hasAnyRole('USER')");
+        http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
         http.authorizeRequests().and().formLogin()//
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
                 .loginPage("/login")//
-                .defaultSuccessUrl("/user/welcome")//
-                .failureUrl("/login?error=true")//
-                .usernameParameter("username")//
+                .defaultSuccessUrl("/user/welcome")
+                .failureUrl("/login?error=true")
+                .usernameParameter("username")
                 .passwordParameter("password")
                 // Config for Logout Page
                 .and().logout();

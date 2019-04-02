@@ -6,6 +6,7 @@ import com.example.test.model.UserRole;
 import com.example.test.service.RoleService;
 import com.example.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,7 +44,14 @@ public class UserController {
         model.put("user", user);
         return "welcomeuser";
     }
+    @GetMapping(value = "/user/only")
+    public String useronly(
+            Principal user,
+            Map<String, Object> model) {
 
+        model.put("user", user);
+        return "welcomeuser";
+    }
     @GetMapping(value = "/admin/newuser")
     public String userNew(Map<String, Object> model) {
         model.put("title", "New user");
@@ -51,7 +59,6 @@ public class UserController {
         model.put("roles",roleService.getRoles());
         return "editUser";
     }
-
     @PostMapping(value = "/admin/adduser")
     public String addUser(
             @RequestParam(name = "username") String username,
@@ -78,7 +85,6 @@ public class UserController {
             return "editUser";
         }
     }
-
     @GetMapping(value = "/admin/edituser")
     public String listUser(
             @RequestParam Long id,
@@ -93,7 +99,6 @@ public class UserController {
         model.put("roles", roleService.getRoles());
         return "editUser";
     }
-
     @PostMapping(value = "/admin/saveuser")
     public String addUser(
             @RequestParam Long id,
@@ -116,7 +121,6 @@ public class UserController {
         userService.updateUser(userFromDB);
         return "redirect:/admin/listuser";
     }
-
     @PostMapping(value = "/admin/deleteuser")
     public String addUser(@RequestParam long id) {
         User userFromDB = userService.getUserById(id);
