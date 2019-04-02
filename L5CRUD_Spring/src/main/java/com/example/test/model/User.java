@@ -20,7 +20,7 @@ public class User implements UserDetails {
     private String password;
     private String description;
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval=true)
-    private Set<UserRole> roles = new HashSet<UserRole>();
+    private Set<Role> roles = new HashSet<Role>();
 
     public User() {
     }
@@ -38,7 +38,7 @@ public class User implements UserDetails {
         this.description = description;
     }
 
-    public User(String name, String password, String description, Set<UserRole> roles) {
+    public User(String name, String password, String description, Set<Role> roles) {
         this.name = name;
         this.password = password;
         this.description = description;
@@ -82,27 +82,25 @@ public class User implements UserDetails {
         this.description = description;
     }
 
-    public Set<UserRole> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UserRole> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public void addRole(UserRole userRole){
-        this.roles.add(userRole);
+    public void addRole(Role role){
+        this.roles.add(role);
     }
 
-    public void addRole(Role role){
-        this.addRole(new UserRole(this,role));
-    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-        for (UserRole role : getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().getRole()));
+        for (Role role : getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
         return grantedAuthorities;
     }

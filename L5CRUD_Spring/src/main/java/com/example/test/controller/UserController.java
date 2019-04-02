@@ -2,13 +2,9 @@ package com.example.test.controller;
 
 import com.example.test.model.Role;
 import com.example.test.model.User;
-import com.example.test.model.UserRole;
 import com.example.test.service.RoleService;
 import com.example.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -141,8 +137,8 @@ public class UserController {
     //    Вспомогательная для вывода ролей во вьюху и выбора существующих ролей  юзверя выбранного
     private List<Long> getRolesForView(User user){
         List<Long> arr = new ArrayList<Long>();
-        for (UserRole role: user.getRoles()) {
-            arr.add(role.getRole().getId());
+        for (Role role: user.getRoles()) {
+            arr.add(role.getId());
         }
         return arr;
     }
