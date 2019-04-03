@@ -22,6 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    CustomSuccessHandler customSuccessHandler;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -38,12 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and().formLogin()//
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
                 .loginPage("/login")//
-                .defaultSuccessUrl("/user/welcome")
+                .successHandler(customSuccessHandler)
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
+
                 // Config for Logout Page
                 .and().logout();
+        http.exceptionHandling().accessDeniedPage("/403");
     }
     @Override
     public void configure(AuthenticationManagerBuilder builder)

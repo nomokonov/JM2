@@ -13,8 +13,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserDaoHibernateImpl implements UserDao {
-    @Autowired
-    UserDao userDAO;
+
     @Autowired
     private SessionFactory sessionFactory;
 

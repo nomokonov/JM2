@@ -4,7 +4,7 @@
 
     <h2>${title}</h2>
     <#if message??>
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger" name="alert">
             ${message}
         </div>
     </#if>
@@ -28,18 +28,18 @@
             <#--UserRoles bein-->
             <#if roles??>
             <#list roles>
-            <#items as role>
+            <#items as name>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <input type="checkbox" value="${role.id}" name="listRoles"
+                            <input type="checkbox" value="${name.id}" name="listRoles"
                                     <#if userroles??>
-                                        ${userroles?seq_contains(role.id)?string(" checked ", "")}
+                                        ${userroles?seq_contains(name.id)?string(" checked ", "")}
                                     </#if>
                                    aria-label="Checkbox for following text input">
                         </div>
                     </div>
-                    <input type="text" class="form-control" aria-label="Text input with checkbox" value="${role.role}"
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" value="${name.name}"
                            readonly>
                 </div>
 

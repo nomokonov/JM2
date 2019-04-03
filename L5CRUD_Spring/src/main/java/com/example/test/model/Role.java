@@ -3,6 +3,7 @@ package com.example.test.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Role implements GrantedAuthority {
@@ -10,14 +11,20 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy= GenerationType.IDENTITY )
     @Column(name = "id")
     private long id;
-    String role;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="userroles",
+            joinColumns=@JoinColumn(name="role_id"),
+            inverseJoinColumns=@JoinColumn(name="user_id"))
+    List<User> user;
+    String name;
     String description;
 
     public Role() {
     }
 
-    public Role(String role) {
-        this.role = role;
+    public Role(String name) {
+        this.name = name;
     }
 
     public long getId() {
@@ -28,12 +35,20 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public List<User> getUser() {
+        return user;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setUser(List<User> user) {
+        this.user = user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -46,6 +61,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return this.getRole();
+        return this.getName();
     }
 }

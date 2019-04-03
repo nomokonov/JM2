@@ -19,8 +19,11 @@ public class User implements UserDetails {
     private String name;
     private String password;
     private String description;
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval=true)
-    private Set<Role> roles = new HashSet<Role>();
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name="userroles",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="role_id"))
+    private  Set<Role> roles ;
 
     public User() {
     }
@@ -94,13 +97,11 @@ public class User implements UserDetails {
         this.roles.add(role);
     }
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
         for (Role role : getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return grantedAuthorities;
     }
