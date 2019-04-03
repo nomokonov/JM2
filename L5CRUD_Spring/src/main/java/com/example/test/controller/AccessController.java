@@ -13,13 +13,14 @@ public class AccessController {
         model.put("message", "Access denied (403)");
         return "login";
     }
+
     //  Authorization
-    @GetMapping(value = {"/login","/"})
+    @GetMapping(value = {"/login", "/"})
     public String login(
             @RequestParam(required = false) boolean error,
             Map<String, Object> model) {
-        if ( error) {
-            model.put("message","Wrong username or password");
+        if (error) {
+            model.put("message", "Wrong username or password");
         }
         return "login";
     }

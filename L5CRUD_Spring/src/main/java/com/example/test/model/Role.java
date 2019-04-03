@@ -8,14 +8,14 @@ import java.util.List;
 @Entity
 public class Role implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name="userroles",
-            joinColumns=@JoinColumn(name="role_id"),
-            inverseJoinColumns=@JoinColumn(name="user_id"))
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "userroles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     List<User> user;
     String name;
     String description;

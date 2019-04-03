@@ -29,15 +29,15 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
 
-
-    @GetMapping(value = { "/welcome","/"})
+    @GetMapping(value = {"/welcome", "/"})
     public String welcome(
-           Principal user,
-                    Map<String, Object> model) {
+            Principal user,
+            Map<String, Object> model) {
 
         model.put("user", user);
         return "welcomeuser";
     }
+
     @GetMapping(value = "/only")
     public String useronly(
             Principal user,
@@ -46,8 +46,6 @@ public class UserController {
         model.put("user", user);
         return "welcomeuser";
     }
-
-
 
 
 }

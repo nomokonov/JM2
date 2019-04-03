@@ -27,18 +27,20 @@ public class AdminController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping(value = {"/listuser","/"})
+    @GetMapping(value = {"/listuser", "/"})
     public String listUser(Map<String, Object> model) {
         model.put("users", userService.getUsers());
         return "listUsers";
     }
+
     @GetMapping(value = "/newuser")
     public String userNew(Map<String, Object> model) {
         model.put("title", "New user");
         model.put("action", "adduser");
-        model.put("roles",roleService.getRoles());
+        model.put("roles", roleService.getRoles());
         return "editUser";
     }
+
     @PostMapping(value = "/adduser")
     public String addUser(
             @RequestParam(name = "username") String username,
@@ -50,7 +52,7 @@ public class AdminController {
         User userFromDB = userService.getUserByName(username);
         if (userFromDB == null) {
             User user = new User(username, passwordEncoder.encode(password), description);
-            for (long role: roles) {
+            for (long role : roles) {
                 Role roleFromDB = roleService.getRoleById(role);
                 user.addRole(roleFromDB);
             }
@@ -65,6 +67,7 @@ public class AdminController {
             return "editUser";
         }
     }
+
     @GetMapping(value = "/edituser")
     public String listUser(
             @RequestParam Long id,
@@ -72,13 +75,14 @@ public class AdminController {
         model.put("title", "Editing user");
         model.put("action", "saveuser");
         User userfromDB = userService.getUserById(id);
-        model.put("user", userfromDB );
+        model.put("user", userfromDB);
 //for views roles gets
         List<Long> rolesForView = getRolesForView(userfromDB);
         model.put("userroles", rolesForView);
         model.put("roles", roleService.getRoles());
         return "editUser";
     }
+
     @PostMapping(value = "/saveuser")
     public String addUser(
             @RequestParam Long id,
@@ -92,8 +96,8 @@ public class AdminController {
         userFromDB.setPassword(password);
         userFromDB.setDescription(description);
         userFromDB.getRoles().clear();
-        if (listRoles.length > 0){
-            for (long role: listRoles) {
+        if (listRoles.length > 0) {
+            for (long role : listRoles) {
                 Role roleFromDB = roleService.getRoleById(role);
                 userFromDB.addRole(roleFromDB);
             }
@@ -101,6 +105,7 @@ public class AdminController {
         userService.updateUser(userFromDB);
         return "redirect:/admin/listuser";
     }
+
     @PostMapping(value = "/deleteuser")
     public String addUser(@RequestParam long id) {
         User userFromDB = userService.getUserById(id);
@@ -109,9 +114,9 @@ public class AdminController {
     }
 
     //    Вспомогательная для вывода ролей во вьюху и выбора существующих ролей  юзверя выбранного
-    private List<Long> getRolesForView(User user){
+    private List<Long> getRolesForView(User user) {
         List<Long> arr = new ArrayList<Long>();
-        for (Role role: user.getRoles()) {
+        for (Role role : user.getRoles()) {
             arr.add(role.getId());
         }
         return arr;
