@@ -12,7 +12,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "id")
     private long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany( fetch = FetchType.EAGER,cascade = CascadeType.DETACH )
     @JoinTable(name = "userroles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
