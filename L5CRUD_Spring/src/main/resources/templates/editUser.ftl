@@ -39,7 +39,7 @@
                                    aria-label="Checkbox for following text input">
                         </div>
                     </div>
-                    <input type="text" class="form-control" aria-label="Text input with checkbox" value="${name.name}"
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" value="${name.description}(${name.name})"
                            readonly>
                 </div>
 
