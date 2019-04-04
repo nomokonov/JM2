@@ -9,8 +9,12 @@ import java.util.List;
 
 @Service
 public class RoleService {
-    @Autowired
     RoleDao roleDao;
+
+    @Autowired
+    public RoleService(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
 
     public List<Role> getRoles() {
         return roleDao.findAll();

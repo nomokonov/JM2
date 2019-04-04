@@ -13,8 +13,12 @@ import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
     UserDao userDao;
+
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {

@@ -20,12 +20,16 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
     private UserService userService;
-    @Autowired
     private RoleService roleService;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping(value = {"/listuser", "/"})
     public String listUser(Map<String, Object> model) {

@@ -11,10 +11,14 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
+//@Transactional
 public class RoleDaoImpl implements RoleDao {
-    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public RoleDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Role findById(Long id) {

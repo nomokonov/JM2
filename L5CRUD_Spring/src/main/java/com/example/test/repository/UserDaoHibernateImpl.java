@@ -11,11 +11,15 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
+//@Transactional
 public class UserDaoHibernateImpl implements UserDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public UserDaoHibernateImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public User findById(long id) {
         return sessionFactory.getCurrentSession().get(User.class, id);
