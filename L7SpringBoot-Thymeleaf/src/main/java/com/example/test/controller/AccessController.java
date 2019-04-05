@@ -11,7 +11,7 @@ public class AccessController {
     @GetMapping(value = "/403")
     public String listUser(Map<String, Object> model) {
         model.put("message", "Access denied (403)");
-        return "login";
+        return "login.html";
     }
 
     //  Authorization
@@ -22,6 +22,6 @@ public class AccessController {
         if (error) {
             model.put("message", "Wrong username or password");
         }
-        return "login";
+        return "login.html";
     }
 }

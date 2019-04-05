@@ -1,4 +1,4 @@
-<#macro page>
+<header th:fragment="header">
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -9,14 +9,18 @@
         <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     </head>
     <body>
-    <#include "navbar.ftl">
+    <div th:include="navbar :: navbar">
+        NavBar
+    </div>
     <div class="container mt-5">
-        <#if user??>${user.name}</#if>
+        <div th:if="${user}? ${user.name}"> Username       </div>
 
     </div>
-    <div class="container mt-5">
-        <#nested>
-    </div>
+
+</header>
+
+<footer th:fragment="footer">
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -31,4 +35,4 @@
             crossorigin="anonymous"></script>
     </body>
     </html>
-</#macro>
+</footer>

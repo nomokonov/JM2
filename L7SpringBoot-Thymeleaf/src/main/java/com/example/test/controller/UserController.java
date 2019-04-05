@@ -34,7 +34,7 @@ public class UserController {
             Map<String, Object> model) {
 
         model.put("user", user);
-        return "welcomeuser";
+        return "welcomeuser.html";
     }
 
     @GetMapping(value = "/only")
@@ -43,7 +43,7 @@ public class UserController {
             Map<String, Object> model) {
 
         model.put("user", user);
-        return "welcomeuser";
+        return "welcomeuser.html";
     }
 
 

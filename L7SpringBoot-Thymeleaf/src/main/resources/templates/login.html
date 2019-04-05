@@ -1,6 +1,8 @@
-<#import "common.ftl" as c>
+<div th:include="common :: header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
 
-<@c.page>
+
+<div class="container mt-5">
+
     <h5>Login</h5>
 
     <form method="post" action="/j_spring_security_check">
@@ -19,11 +21,12 @@
 
         <button class="btn btn-primary" type="submit">Login</button>
     </form>
-<p></p>
-    <#if message??>
-        <div class="alert alert-danger" role="alert">
-            ${message}
-        </div>
-    </#if>
+    <p></p>
+    <div class="alert alert-danger" role="alert"  th:text="${message}" th:if="${message}">
+            Message
+    </div>
 
-</@c.page>
+
+</div>
+
+<div th:include="common :: footer"></div>

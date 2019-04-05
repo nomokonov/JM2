@@ -41,6 +41,7 @@ public class AdminController {
     public String userNew(Map<String, Object> model) {
         model.put("title", "New user");
         model.put("action", "adduser");
+        model.put("userroles", new int[]{-111});
         model.put("roles", roleService.getRoles());
         return "editUser";
     }

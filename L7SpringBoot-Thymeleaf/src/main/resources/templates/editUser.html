@@ -1,0 +1,60 @@
+<div th:include="common :: header"></div>
+<div class="container mt-5">
+
+
+    <h2 th:text="${title}">title</h2>
+    <div class="alert alert-danger" name="alert"
+         th:if="${message}"
+         th:text="${message}">
+        Message
+    </div>
+    <form action="action" th:action="@{${action}}" method="post">
+        <input type="hidden" name="id" id="Id"
+               th:if="${action}=='saveuser'"
+               value="id" th:value="${user.id}">
+
+        <div class="form-group">
+            <label for="Username" th:text="${user}? ${user.name}: '' ">Username</label>
+            <input type="text" class="form-control" name="username" id="Username" placeholder="Username"
+                   value="username" th:value="${user}? ${user.name} : '' ">
+        </div>
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" name="password" id="Password" placeholder="Password"
+                   value="password" th:value="${user}? ${user.password}: '' ">
+        </div>
+        <div class="form-group">
+            <label for="Role">Role</label>
+
+            <div class="input-group mb-3" th:each="role : ${roles}" th:if="${roles}">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" th:value="${role.id}" name="listRoles"
+
+                               th:checked="${#lists.contains(userroles, role.id)}"
+                               aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox"
+                       th:value="${role.description} + ' (' + ${role.name} + ')'"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <input type="text" class="form-control" name="description" id="Description" placeholder="Description"
+                   th:value="${user}? ${user.description}: '' ">
+        </div>
+        <button type="submit" class="btn btn-primary">Save user</button>
+    </form>
+
+    <div th:if="${action}=='saveuser'">
+        <h3>For deleting user press button</h3>
+        <form action="deleteuser" method="post">
+            <input type="hidden" name="id" id="Id" th:value="${user.id}">
+            <button type="submit" class="btn btn-danger btn-lg btn-block">Delete user</button>
+        </form>
+    </div>
+</div>
+
+<div th:include="common :: footer"></div>
