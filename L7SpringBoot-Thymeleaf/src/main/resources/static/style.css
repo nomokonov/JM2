@@ -1,3 +1,19 @@
-body {
-    color: #113;
+.bg-gray{
+    background-color:#eee;
+}
+
+.my-btn-primary {
+    color: #fff;
+    background-color: #275d8d;
+    border-color: #0062cc;
+
+    background-image: linear-gradient(to bottom,  rgba(255,255,255,0.3) , rgba(0,0,0,0.05));
+    background-repeat: repeat-x;
+}
+
+.my-link{
+    color:#aaa;
+}
+.my-link:hover{
+    color:#fff;
 }
