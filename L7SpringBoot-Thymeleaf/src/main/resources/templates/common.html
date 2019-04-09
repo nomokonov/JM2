@@ -12,11 +12,21 @@
 
 </header>
 
+<nav class="navbar sticky-top navbar-dark bg-dark" th:fragment="topnavbar">
+    <a class="navbar-brand flex-left" Style="color:#aaa" href="/">L5CRUD+Security</a>
+    <a class="nav-link my-link flex-right" href="/logout">Logout</a>
+</nav>
 
+<!-- A vertical navbar -->
+<nav class="navbar bg-light sidebar align-items-start pt-4 pr-0 pl-0" th:fragment="leftnavbar">
+    <!-- Links -->
+    <div class="list-group col ">
+        <a href="/admin/" class="list-group-item list-group-item-action rounded-0 border-0 active ">Admin</a>
+        <a href="/user/" class="list-group-item list-group-item-action rounded-0 border-0">User</a>
+    </div>
+</nav>
 
 <footer th:fragment="footer">
-
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

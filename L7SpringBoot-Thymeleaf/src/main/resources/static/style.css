@@ -17,3 +17,11 @@
 .my-link:hover{
     color:#fff;
 }
+.my-active :enabled {
+    border:  black solid;
+}
+.sidebar {
+
+    height: 100vh;
+
+}

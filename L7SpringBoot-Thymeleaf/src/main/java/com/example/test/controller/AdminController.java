@@ -34,7 +34,7 @@ public class AdminController {
     @GetMapping(value = {"/listuser", "/"})
     public String listUser(Map<String, Object> model) {
         model.put("users", userService.getUsers());
-        return "listUsers";
+        return "admin";
     }
 
     @GetMapping(value = "/newuser")

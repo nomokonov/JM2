@@ -1,0 +1,77 @@
+<div th:include="common :: header"></div>
+
+<div th:replace="common :: topnavbar"></div>
+
+<div class="container-fluid ">
+    <div class="row ">
+        <div class="col-2 p-0 ">
+            <div th:replace="common :: leftnavbar"></div>
+
+        </div>
+        <div class="col pt-4">
+            <h1>Admin panel</h1>
+            <br>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#home">User table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#menu1">New user</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="home" class=" tab-pane active"><br>
+                    <h3 class="ml-4 ">All users</h3>
+                    <div class="pl-3 pr-3 pb-3 bg-light ">
+                        <table class="table table-striped ">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Roles</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}">ID</td>
+                                <td>ROLES</td>
+                                <td th:text="${user.name }">admin</td>
+                                <td>email@example.com</td>
+                                <td>
+                                    <a href="/edituser?id=1" class="btn btn-primary"
+                                       th:href="@{edituser(id=${user.id})}">edit</a>
+                                </td>
+                            </tr>
+                           </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="menu1" class=" tab-pane fade"><br>
+                    <h3 class="ml-4 ">Add new user</h3>
+                    <div class="pl-3 pr-3 bg-light ">
+
+                        <h3 class="ml-4 " th:text="${#httpServletRequest.getContextPath()}">ssavsvsvsv</h3>
+                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.</p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:include="common :: footer"></div>

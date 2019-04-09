@@ -1,35 +1,24 @@
 <div th:include="common :: header"></div>
 
-<div class="container" >
-    <div class="row mt-5 pt-5">
-        <div class="col-4  m-auto ">
+<div class="container pt-5" >
+
+    <div class="row pb-2">
+        <div class="col-sm-4  pt-5  m-auto ">
             <h2 style="font-weight:bold">Please sign in</h2>
-        </div>
-    </div>
-    <form method="post" action="/j_spring_security_check">
-        <div class="row pb-2">
-            <div class="col-4   m-auto ">
+            <form method="post" action="/j_spring_security_check">
                 <div class="list-group">
 
-                    <input class="list-group-item"  type="user" name="username" placeholder="username"/>
-                    <input class="list-group-item"  type="password" name="password" placeholder="password"/>
+                    <input class=" list-group-item "  type="user" name="username" placeholder="username"/>
+                    <input class="list-group-item "  type="password" name="password" placeholder="password"/>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4   m-auto ">
-                <button class="btn my-btn-primary btn-block btn-lg " type="submit">Sign in</button>
-
-            </div>
-        </div>
-    </form>
-    <div class="row ">
-        <div class="col-7 pt-3 m-auto ">
-            <div class="alert alert-danger" role="alert" th:text="${message}" th:if="${message}">
-                Message
-            </div>
+                <button class="btn my-btn-primary btn-block btn-lg mt-3 " type="submit">Sign in</button>
+                <div class="alert alert-danger mt-3" role="alert" th:text="${message}" th:if="${message}">
+                    Message
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 <div th:include="common :: footer"></div>
