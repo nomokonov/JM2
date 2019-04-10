@@ -34,22 +34,24 @@ public class AdminController {
     @GetMapping(value = {"/listuser", "/"})
     public String listUser(Map<String, Object> model) {
         model.put("users", userService.getUsers());
+        model.put("roles", roleService.getRoles());
         return "admin";
     }
 
-    @GetMapping(value = "/newuser")
-    public String userNew(Map<String, Object> model) {
-        model.put("title", "New user");
-        model.put("action", "adduser");
-        model.put("userroles", new int[]{-111});
-        model.put("roles", roleService.getRoles());
-        return "editUser";
-    }
+//    @GetMapping(value = "/newuser")
+//    public String userNew(Map<String, Object> model) {
+//        model.put("title", "New user");
+//        model.put("action", "adduser");
+//        model.put("userroles", new int[]{-111});
+//        model.put("roles", roleService.getRoles());
+//        return "editUser";
+//    }
 
     @PostMapping(value = "/adduser")
     public String addUser(
             @RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password,
+            @RequestParam(name = "email") String email,
             @RequestParam(name = "description") String description,
             @RequestParam(name = "listRoles") long[] roles,
             Map<String, Object> model) {
@@ -57,6 +59,7 @@ public class AdminController {
         User userFromDB = userService.getUserByName(username);
         if (userFromDB == null) {
             User user = new User(username, passwordEncoder.encode(password), description);
+            user.setEmail(email);
             for (long role : roles) {
                 Role roleFromDB = roleService.getRoleById(role);
                 user.addRole(roleFromDB);
@@ -69,7 +72,7 @@ public class AdminController {
             model.put("message", "the user name is occupied " + userFromDB.getName());
             model.put("action", "adduser");
             model.put("user", userFromDB);
-            return "editUser";
+            return "admin";
         }
     }
 

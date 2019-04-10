@@ -1,32 +1,32 @@
-<div th:include="common :: header"></div>
-<div th:include="navbar :: navbar">NavBar</div>
+<div th:fragment="editUserForm" class="col-sm-4 m-auto text-center">
 
-<div class="container mt-5">
-
-
-    <h2 th:text="${title}">title</h2>
     <div class="alert alert-danger" name="alert"
          th:if="${message}"
          th:text="${message}">
         Message
     </div>
-    <form action="action" th:action="@{${action}}" method="post">
-        <input type="hidden" name="id" id="Id"
+    <form action="action" th:action="${user}? @{saveuser}:@{adduser}" method="post">
+        <input type="text" name="id" id="Id"
                th:if="${action}=='saveuser'"
-               value="id" th:value="${user.id}">
+               value="id" th:value="${user.id}" disabled>
 
         <div class="form-group">
-            <label for="Username" th:text="${user}? ${user.name}: '' ">Username</label>
+            <label for="Username" class="font-weight-bold" >Username</label>
             <input type="text" class="form-control" name="username" id="Username" placeholder="Username"
                    value="username" th:value="${user}? ${user.name} : '' ">
         </div>
         <div class="form-group">
-            <label for="Password">Password</label>
+            <label for="Password"  class="font-weight-bold" >Password</label>
             <input type="password" class="form-control" name="password" id="Password" placeholder="Password"
                    value="password" th:value="${user}? ${user.password}: '' ">
         </div>
         <div class="form-group">
-            <label for="Role">Role</label>
+            <label for="email"  class="font-weight-bold" >E-mail</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="E-mail"
+                   value="email" th:value="${user}? ${user.email}: '' ">
+        </div>
+        <div class="form-group">
+            <label for="Role"  class="font-weight-bold" >Roles</label>
 
             <div class="input-group mb-3" th:each="role : ${roles}" th:if="${roles}">
                 <div class="input-group-prepend">
@@ -47,7 +47,9 @@
             <input type="text" class="form-control" name="description" id="Description" placeholder="Description"
                    th:value="${user}? ${user.description}: '' ">
         </div>
-        <button type="submit" class="btn btn-primary">Save user</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Save user</button>
+        </div>
     </form>
 
     <div th:if="${action}=='saveuser'">
@@ -59,4 +61,3 @@
     </div>
 </div>
 
-<div th:include="common :: footer"></div>

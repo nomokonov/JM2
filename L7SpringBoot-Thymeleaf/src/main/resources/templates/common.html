@@ -21,8 +21,11 @@
 <nav class="navbar bg-light sidebar align-items-start pt-4 pr-0 pl-0" th:fragment="leftnavbar">
     <!-- Links -->
     <div class="list-group col ">
-        <a href="/admin/" class="list-group-item list-group-item-action rounded-0 border-0 active ">Admin</a>
-        <a href="/user/" class="list-group-item list-group-item-action rounded-0 border-0">User</a>
+        <a href="/admin/" class="list-group-item list-group-item-action rounded-0 border-0 "
+                th:classappend="${#strings.contains(#httpServletRequest.requestURI, 'admin')}? active">Admin</a>
+        <a href="/user/" class="list-group-item list-group-item-action rounded-0 border-0"
+           th:classappend="${#strings.contains(#httpServletRequest.requestURI, 'user')}? active"
+            >User</a>
     </div>
 </nav>
 

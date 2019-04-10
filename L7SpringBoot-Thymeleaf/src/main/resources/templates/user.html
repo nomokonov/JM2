@@ -1,0 +1,21 @@
+<div th:include="common :: header"></div>
+
+<div th:replace="common :: topnavbar"></div>
+
+<div class="container-fluid ">
+    <div class="row ">
+        <div class="col-2 p-0 ">
+            <div th:replace="common :: leftnavbar"></div>
+
+        </div>
+        <div class="col pt-4">
+
+            <h1>User page</h1>
+            <br>
+            <div th:text="|Hello! My dear friend, ${user.name}!|"></div>
+
+        </div>
+    </div>
+</div>
+
+<div th:include="common :: footer"></div>

@@ -18,6 +18,7 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true)
     private String name;
     private String password;
+    private String email;
     private String description;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(name = "userroles",
@@ -75,6 +76,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDescription() {

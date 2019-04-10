@@ -23,55 +23,86 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div id="home" class=" tab-pane active"><br>
-                    <h3 class="ml-4 ">All users</h3>
-                    <div class="pl-3 pr-3 pb-3 bg-light ">
-                        <table class="table table-striped ">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Roles</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Edit</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.id}">ID</td>
-                                <td>ROLES</td>
-                                <td th:text="${user.name }">admin</td>
-                                <td>email@example.com</td>
-                                <td>
-                                    <a href="/edituser?id=1" class="btn btn-primary"
-                                       th:href="@{edituser(id=${user.id})}">edit</a>
-                                </td>
-                            </tr>
-                           </tbody>
-                        </table>
+                <div id="home" class=" tab-pane active">
+                    <div class="card">
+                        <h3 class="card-header">All users</h3>
+
+                        <div class="card-body">
+                            <table class="table table-striped ">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Roles</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.id}">ID</td>
+
+                                    <td th:text="${user.roles}">ROLES</td>
+                                    <td th:text="${user.name }">admin</td>
+                                    <td th:text="${user.email}">email@example.com</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#userModal"
+                                                th:attr="data-whatever=${user.id}"
+                                               >Edit</button>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div id="menu1" class=" tab-pane fade"><br>
-                    <h3 class="ml-4 ">Add new user</h3>
-                    <div class="pl-3 pr-3 bg-light ">
-
-                        <h3 class="ml-4 " th:text="${#httpServletRequest.getContextPath()}">ssavsvsvsv</h3>
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
-
+                <div id="menu1" class=" tab-pane fade">
+                    <div id="home" class=" tab-pane active">
+                        <div class="card">
+                            <h3 class="card-header">Add new user</h3>
+                            <div class="card-body">
+                                <div th:replace="editUser :: editUserForm (userroles='')">EditUserForm</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel" >Edit user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div th:replace="editUser :: editUserForm (action='edit')">EditUserForm</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Send message</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#userModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+</script>
+
 
 <div th:include="common :: footer"></div>
