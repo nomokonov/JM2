@@ -6,10 +6,11 @@
         <div class="col-sm-4  pt-5  m-auto ">
             <h2 style="font-weight:bold">Please sign in</h2>
             <form method="post" action="/j_spring_security_check">
-                <div class="list-group">
-
-                    <input class=" list-group-item "  type="user" name="username" placeholder="username"/>
-                    <input class="list-group-item "  type="password" name="password" placeholder="password"/>
+                <div class="input-group input-group-lg ">
+                    <input class="form-control my-br-top"  type="text" name="username" placeholder="username"/>
+                </div>
+                <div class="input-group input-group-lg  ">
+                    <input class="form-control my-br-bottom "  type="password" name="password" placeholder="password"/>
                 </div>
                 <button class="btn my-btn-primary btn-block btn-lg mt-3 " type="submit">Sign in</button>
                 <div class="alert alert-danger mt-3" role="alert" th:text="${message}" th:if="${message}">

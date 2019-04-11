@@ -3,6 +3,7 @@ package com.example.test.service;
 import com.example.test.model.User;
 import com.example.test.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,7 +42,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getUsers() {
-        return (List<User>) userRepo.findAll();
+        return (List<User>) userRepo.findAll(new Sort(Sort.Direction.ASC, "id"));
     }
 
     public void saveUser(User user) {

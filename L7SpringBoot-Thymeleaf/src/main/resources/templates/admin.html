@@ -8,7 +8,7 @@
             <div th:replace="common :: leftnavbar"></div>
 
         </div>
-        <div class="col pt-4">
+        <div class="col pt-4 ml-4">
             <h1>Admin panel</h1>
             <br>
             <!-- Nav tabs -->
@@ -46,9 +46,10 @@
                                     <td th:text="${user.name }">admin</td>
                                     <td th:text="${user.email}">email@example.com</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target="#userModal"
                                                 th:attr="data-whatever=${user.id}"
+                                                th:attrappend="data-username=${user.name}"
                                                >Edit</button>
 
                                     </td>
@@ -62,8 +63,10 @@
                     <div id="home" class=" tab-pane active">
                         <div class="card">
                             <h3 class="card-header">Add new user</h3>
-                            <div class="card-body">
-                                <div th:replace="editUser :: editUserForm (userroles='')">EditUserForm</div>
+                            <div class="card-body text-center">
+                                <div class="col-sm-4 m-auto">
+                                    <div th:replace="editUser :: editUserForm (userroles='')">EditUserForm</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -87,7 +90,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <!--<button type="button" class="btn btn-primary">Send message</button>-->
+                <button type="button" class="btn btn-primary"  onclick="$('#edituserform').submit();">Edit user</button>
             </div>
         </div>
     </div>

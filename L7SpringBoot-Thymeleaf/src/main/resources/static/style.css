@@ -26,3 +26,11 @@
 
 }
 
+
+.my-br-top{
+    border-radius: 4pt 4pt 0pt 0pt  !important;
+}
+.my-br-bottom{
+    border-radius:  0pt 0pt 4pt 4pt  !important;
+}
+

@@ -1,14 +1,24 @@
-<div th:fragment="editUserForm" class="col-sm-4 m-auto text-center">
+<div th:fragment="editUserForm" class=" m-auto text-center">
 
     <div class="alert alert-danger" name="alert"
          th:if="${message}"
          th:text="${message}">
         Message
     </div>
-    <form action="action" th:action="${user}? @{saveuser}:@{adduser}" method="post">
-        <input type="text" name="id" id="Id"
-               th:if="${action}=='saveuser'"
-               value="id" th:value="${user.id}" disabled>
+    <form  action="action" th:action="${user}? @{saveuser}:@{adduser}" method="post"
+           th:id="${user}? 'edituserform' :'newuserform'">
+        <div class="form-group" th:classappend="not ${user}? 'd-none'">
+            <label for="userid" class="font-weight-bold" >User Id</label>
+
+
+            <input type="text" class="form-control"  name="v_id" id="userid"
+                   th:if="${action}=='saveuser'"
+                   value="id" th:value="${user.id}" disabled>
+        </div>
+
+        <input type="hidden" class="form-control"  name="id"
+               th:if="${user}"
+               value="id" th:value="${user.id}" >
 
         <div class="form-group">
             <label for="Username" class="font-weight-bold" >Username</label>
@@ -47,17 +57,18 @@
             <input type="text" class="form-control" name="description" id="Description" placeholder="Description"
                    th:value="${user}? ${user.description}: '' ">
         </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-success">Save user</button>
+        <div class="form-group" id="btn-sub">
+            <button type="submit" class="btn btn-success btn-lg"
+                    th:if="not ${user}">Add new user</button>
         </div>
     </form>
 
-    <div th:if="${action}=='saveuser'">
-        <h3>For deleting user press button</h3>
-        <form action="deleteuser" method="post">
-            <input type="hidden" name="id" id="Id" th:value="${user.id}">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">Delete user</button>
-        </form>
-    </div>
+    <!--<div th:if="${action}=='saveuser'">-->
+        <!--<h3>For deleting user press button</h3>-->
+        <!--<form action="deleteuser" method="post">-->
+            <!--<input type="hidden" name="id" id="Id" th:value="${user.id}">-->
+            <!--<button type="submit" class="btn btn-danger btn-lg btn-block">Delete user</button>-->
+        <!--</form>-->
+    <!--</div>-->
 </div>
 

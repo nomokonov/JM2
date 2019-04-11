@@ -96,12 +96,14 @@ public class AdminController {
             @RequestParam Long id,
             @RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password,
+            @RequestParam(name = "email") String email,
             @RequestParam(name = "description") String description,
             @RequestParam(name = "listRoles") long[] listRoles) {
 
         User userFromDB = userService.getUserById(id);
         userFromDB.setName(username);
         userFromDB.setPassword(password);
+        userFromDB.setEmail(email);
         userFromDB.setDescription(description);
         userFromDB.getRoles().clear();
         if (listRoles.length > 0) {
@@ -111,7 +113,7 @@ public class AdminController {
             }
         }
         userService.updateUser(userFromDB);
-        return "redirect:/admin/listuser";
+        return "redirect:/admin/";
     }
 
     @PostMapping(value = "/deleteuser")
