@@ -1,4 +1,4 @@
-package com.example.test.config;
+package com.example.test.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

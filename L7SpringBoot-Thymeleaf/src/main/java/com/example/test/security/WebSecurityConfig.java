@@ -1,4 +1,4 @@
-package com.example.test.config;
+package com.example.test.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
 
@@ -53,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder builder)
             throws Exception {
-        builder.userDetailsService(userService).passwordEncoder(passwordEncoder);
+        builder.userDetailsService(userService).passwordEncoder(getPasswordEncoder());
     }
 
 }
