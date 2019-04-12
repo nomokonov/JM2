@@ -66,7 +66,7 @@ public class AdminController {
             }
 
             userService.saveUser(user);
-            return "redirect:/admin/listuser";
+            return "redirect:/admin/";
         } else {
             model.put("title", "Editing user");
             model.put("message", "the user name is occupied " + userFromDB.getName());
@@ -102,7 +102,10 @@ public class AdminController {
 
         User userFromDB = userService.getUserById(id);
         userFromDB.setName(username);
-        userFromDB.setPassword(password);
+        if ( !userFromDB.getPassword().equals(password) ){
+            userFromDB.setPassword(passwordEncoder.encode(password));
+        }
+
         userFromDB.setEmail(email);
         userFromDB.setDescription(description);
         userFromDB.getRoles().clear();
