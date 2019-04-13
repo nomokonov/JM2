@@ -1,5 +1,7 @@
 package com.example.test.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +16,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "username", nullable = false, unique = true)
     private String name;
     private String password;
@@ -24,12 +26,13 @@ public class User implements UserDetails {
     @JoinTable(name = "userroles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    @JsonManagedReference
     private Set<Role> roles = new HashSet<Role>();
 
     public User() {
     }
 
-    public User(long id, String name, String password, String description) {
+    public User(Long id, String name, String password, String description) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -54,11 +57,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,7 +108,7 @@ public class User implements UserDetails {
     public void addRole(Role role) {
         this.roles.add(role);
     }
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
@@ -115,26 +118,27 @@ public class User implements UserDetails {
         return grantedAuthorities;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return getName();
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

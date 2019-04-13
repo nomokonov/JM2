@@ -1,5 +1,7 @@
 package com.example.test.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -10,12 +12,13 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @ManyToMany( fetch = FetchType.EAGER,cascade = CascadeType.DETACH )
     @JoinTable(name = "userroles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonBackReference
     List<User> user;
     String name;
     String description;
@@ -27,11 +30,11 @@ public class Role implements GrantedAuthority {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,11 +62,13 @@ public class Role implements GrantedAuthority {
         this.description = description;
     }
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return this.getName();
     }
 
+    @JsonIgnore
     @Override
     public String toString() {
         return  name;
