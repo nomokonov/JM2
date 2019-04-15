@@ -23,8 +23,8 @@
     <div class="list-group col p-0 m-0">
         <div sec:authorize="hasRole('ROLE_ADMIN')">
         <a href="/admin/" class="list-group-item list-group-item-action  rounded-0 border-0 "
-
                 th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/')}? active">Admin</a>
+        <a href="/static/rest_client.html" class="list-group-item list-group-item-action  rounded-0 border-0 "  >REST Client</a>
         </div>
         <a href="/user/" class="list-group-item list-group-item-action rounded-0 border-0"
            th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/user/')}? active"
