@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/user")
+@RequestMapping("/rest/user/")
 public class UserRestController {
     private UserService userService;
     private RoleService roleService;
@@ -35,13 +35,13 @@ public class UserRestController {
         return userService.getUserById(Long.valueOf(id));
     }
 
-    @PutMapping
+    @PutMapping("new")
     public User createUser(@RequestBody User user) {
         userService.saveUser(user);
         return user;
     }
 
-    @PostMapping("{id}")
+    @PostMapping("update/{id}")
     public User updateUser(
             @PathVariable String id,
             @RequestBody User user) {
@@ -52,7 +52,7 @@ public class UserRestController {
         return user;
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("delete/{id}")
     public void deleteUser(@PathVariable String id) {
         User userFromDB = userService.getUserById(Long.valueOf(id));
         userService.deleteUser(userFromDB);

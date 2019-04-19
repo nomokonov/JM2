@@ -22,7 +22,7 @@ $(document).ready(function () {
         });
         var json = JSON.stringify(obj);
         $.ajax({
-            url: "/rest/user/" + form.find('#userid').val(),
+            url: "/rest/user/update/" + form.find('#userid').val(),
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: json,
@@ -58,7 +58,7 @@ $(document).ready(function () {
         });
         var json = JSON.stringify(obj);
         $.ajax({
-            url: "/rest/user/",
+            url: "/rest/user/new/",
             type: "PUT",
             contentType: "application/json; charset=utf-8",
             data: json,
@@ -98,7 +98,7 @@ $('#userModal').on('show.bs.modal', function (event) {
 })
 
 function listUsers() {
-    $.getJSON('/rest/user', function (data) {
+    $.getJSON('/rest/user/', function (data) {
         var listUsers = '';
 
         $.each(data, function (index, value) {
@@ -164,10 +164,8 @@ function checkUserRoles(userRoles) {
 
 //
 function deleteUser(id){
-
-
         $.ajax({
-            url: "/rest/user/"+id,
+            url: "/rest/user/delete/"+id,
             type: "DELETE",
             contentType: "application/json; charset=utf-8",
             datatype: "json",
