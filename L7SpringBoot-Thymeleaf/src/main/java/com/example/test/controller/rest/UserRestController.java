@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/rest/user/")
 public class UserRestController {
@@ -32,8 +34,14 @@ public class UserRestController {
     @GetMapping("{id}")
     public ResponseEntity<User>getById(
             @PathVariable String id) {
-        return new ResponseEntity<User>(userService.getUserById(Long.valueOf(id)),
-                HttpStatus.OK)  ;
+        try{
+            User user = userService.getUserById(Long.valueOf(id));
+            return new ResponseEntity<User>(user, HttpStatus.OK)  ;
+        }catch (EntityNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND)  ;
+        }
+
     }
 
     @PutMapping("new")

@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -34,7 +36,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserById(long id) {
-        return userRepo.findById(id).get();
+         return userRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User not founnd by id = " + id));
     }
 
     public User getUserByName(String name) {

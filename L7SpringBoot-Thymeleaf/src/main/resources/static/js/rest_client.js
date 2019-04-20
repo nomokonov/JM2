@@ -84,16 +84,39 @@ $('#userModal').on('show.bs.modal', function (event) {
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     //  $('#editUserForm').load('/admin/ediuser?id=' + userid)
     var modal = $(this);
-    $.getJSON('/rest/user/' + userid, function (data) {
-        modal.find('.modal-title').text('Edit user ' + username)
-        modal.find('#userid').val(data.id);
-        modal.find('#Username').val(data.name);
-        modal.find('#Password').val(data.password);
-        modal.find('#email').val(data.email);
-        checkUserRoles(data.roles);
-        modal.find('#description').val(data.description);
-        modal.find('#deleteuserbtn').attr('onclick','deleteUser(' + data.id +')');
-    });
+
+      $.getJSON( '/rest/user/' + userid )
+        .done(function (data) {
+            modal.find('.modal-title').text('Edit user ' + username)
+            modal.find('#userid').val(data.id);
+            modal.find('#Username').val(data.name);
+            modal.find('#Password').val(data.password);
+            modal.find('#email').val(data.email);
+            checkUserRoles(data.roles);
+            modal.find('#description').val(data.description);
+            modal.find('#deleteuserbtn').attr('onclick','deleteUser(' + data.id +')');
+        })
+        .fail(function( jqxhr, textStatus, error ) {
+            var err = textStatus + ", " + error;
+            if (jqxhr.status == 404) {
+
+                alert("User not found");
+                console.log("User not found");
+                $(".modal").modal("hide");
+            }
+            console.log( "Request Failed: " + err );
+        });
+    //
+    // $.getJSON('/rest/user/' + userid, function (data) {
+    //     modal.find('.modal-title').text('Edit user ' + username)
+    //     modal.find('#userid').val(data.id);
+    //     modal.find('#Username').val(data.name);
+    //     modal.find('#Password').val(data.password);
+    //     modal.find('#email').val(data.email);
+    //     checkUserRoles(data.roles);
+    //     modal.find('#description').val(data.description);
+    //     modal.find('#deleteuserbtn').attr('onclick','deleteUser(' + data.id +')');
+    // });
 
 })
 
