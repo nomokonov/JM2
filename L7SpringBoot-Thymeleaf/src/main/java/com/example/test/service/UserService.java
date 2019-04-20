@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(User user) {
-        userRepo.delete(user);
+       userRepo.delete(user);
     }
 
     public void updateUser(User user) {

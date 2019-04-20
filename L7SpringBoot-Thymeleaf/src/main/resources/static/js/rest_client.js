@@ -58,7 +58,7 @@ $(document).ready(function () {
         });
         var json = JSON.stringify(obj);
         $.ajax({
-            url: "/rest/user/new/",
+            url: "/rest/user/new",
             type: "PUT",
             contentType: "application/json; charset=utf-8",
             data: json,
@@ -77,13 +77,13 @@ $(document).ready(function () {
 
 
 $('#userModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var userid = button.data('whatever') // Extract info from data-* attributes
-    var username = button.data('username')
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var userid = Number(button.data('whatever') );// Extract info from data-* attributes
+    var username = button.data('username');
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     //  $('#editUserForm').load('/admin/ediuser?id=' + userid)
-    var modal = $(this)
+    var modal = $(this);
     $.getJSON('/rest/user/' + userid, function (data) {
         modal.find('.modal-title').text('Edit user ' + username)
         modal.find('#userid').val(data.id);
@@ -113,7 +113,7 @@ function listUsers() {
             listUsers += '<td>' + value.email + '</td>';
             listUsers += '<td><button type="button" class="btn btn-info" data-toggle="modal"' +
                 ' data-target="#userModal"' +
-                ' data-whatever=' + value.id +
+                ' data-whatever=' + Number(value.id) +
                 ' data-username="' + value.name + '"' +
                 ' >Edit</button></td>';
 
@@ -161,6 +161,8 @@ function checkUserRoles(userRoles) {
         form.find('#role_id_' + value.id).prop('checked', true);
     });
 }
+
+
 
 //
 function deleteUser(id){

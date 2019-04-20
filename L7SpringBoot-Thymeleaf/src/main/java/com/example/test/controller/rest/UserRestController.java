@@ -4,10 +4,10 @@ import com.example.test.model.User;
 import com.example.test.service.RoleService;
 import com.example.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/rest/user/")
@@ -25,36 +25,40 @@ public class UserRestController {
     }
 
     @GetMapping
-    public List<User> getAll() {
-        return userService.getUsers();
+    public ResponseEntity<?> LgetAll() {
+        return new ResponseEntity<>(userService.getUsers(),HttpStatus.ACCEPTED);
     }
 
     @GetMapping("{id}")
-    public User getById(
+    public ResponseEntity<User>getById(
             @PathVariable String id) {
-        return userService.getUserById(Long.valueOf(id));
+        return new ResponseEntity<User>(userService.getUserById(Long.valueOf(id)),
+                HttpStatus.OK)  ;
     }
 
     @PutMapping("new")
-    public User createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         userService.saveUser(user);
-        return user;
+        return new ResponseEntity<User>(user,
+                HttpStatus.CREATED);
     }
 
     @PostMapping("update/{id}")
-    public User updateUser(
+    public ResponseEntity<User>  updateUser(
             @PathVariable String id,
             @RequestBody User user) {
 
         user.setId(Long.valueOf(id));
         userService.saveUser(user);
 
-        return user;
+        return new ResponseEntity<User>( user,
+                HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteUser(@PathVariable String id) {
+    public ResponseEntity<User> deleteUser(@PathVariable String id) {
         User userFromDB = userService.getUserById(Long.valueOf(id));
         userService.deleteUser(userFromDB);
+        return new ResponseEntity<User>(userFromDB,HttpStatus.OK);
     }
 }
