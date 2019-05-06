@@ -1,24 +1,36 @@
 <div th:include="common :: header"></div>
 
-<div class="container pt-5" >
+<div class="container pt-5">
 
     <div class="row pb-2">
         <div class="col-sm-4  pt-5  m-auto ">
             <h2 style="font-weight:bold">Please sign in</h2>
             <form method="post" action="/j_spring_security_check">
                 <div class="input-group input-group-lg ">
-                    <input class="form-control my-br-top"  type="text" name="username" placeholder="username"/>
+                    <input class="form-control my-br-top" type="text" name="username" placeholder="username"/>
                 </div>
                 <div class="input-group input-group-lg  ">
-                    <input class="form-control my-br-bottom "  type="password" name="password" placeholder="password"/>
+                    <input class="form-control my-br-bottom " type="password" name="password" placeholder="password"/>
                 </div>
                 <button class="btn my-btn-primary btn-block btn-lg mt-3 " type="submit">Sign in</button>
                 <div class="alert alert-danger mt-3" role="alert" th:text="${message}" th:if="${message}">
                     Message
                 </div>
             </form>
+
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-4  pt-5  m-auto ">
+            <a class="btn btn-block btn-social btn-google" th:href="@{${authorizationUrl}}">
+                <i class="fab fa-google"></i>oogle
+            </a>
+            <a class="btn btn-block btn-social btn-vk">
+                <i class="fab fa-vk"></i>ontakte
+            </a>
+        </div>
+    </div>
+
 </div>
 
 
