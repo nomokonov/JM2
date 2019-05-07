@@ -1,15 +1,21 @@
 package com.example.test.controller;
 
+import com.example.test.repository.RoleRepo;
+import com.example.test.service.RoleService;
 import com.example.test.service.UserService;
+import com.example.test.util.GoogleUser;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -22,6 +28,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -35,6 +43,8 @@ public class AccessController {
     UserService userService;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    RoleService roleService;
 
     @GetMapping(value = "/403")
     public String listUser(Map<String, Object> model) {
@@ -70,18 +80,22 @@ public class AccessController {
         OAuthRequest request = new OAuthRequest(Verb.GET,"https://www.googleapis.com/oauth2/v1/userinfo?alt=json");
         oAuth20Service.signRequest(accessToken,request);
         Response response = oAuth20Service.execute(request);
-        model.put("message",response.getBody());
 
+        Gson gson = new Gson();
+        GoogleUser person = gson.fromJson(response.getBody(), GoogleUser.class);
 
-
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken("user", "pass");
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+        List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+        updatedAuthorities.add(authority);
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(person.getName(), person.getId(),updatedAuthorities);
         Authentication auth = authenticationManager.authenticate(authReq);
 
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
+
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return "login.html";
+        return "redirect:/user";
     }
 
 }
