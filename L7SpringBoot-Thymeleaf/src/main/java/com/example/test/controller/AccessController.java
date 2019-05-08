@@ -1,6 +1,6 @@
 package com.example.test.controller;
 
-import com.example.test.repository.RoleRepo;
+import com.example.test.model.User;
 import com.example.test.service.RoleService;
 import com.example.test.service.UserService;
 import com.example.test.util.GoogleUser;
@@ -14,16 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -45,7 +42,8 @@ public class AccessController {
     AuthenticationManager authenticationManager;
     @Autowired
     RoleService roleService;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @GetMapping(value = "/403")
     public String listUser(Map<String, Object> model) {
         model.put("message", "Access denied (403)");
@@ -77,17 +75,25 @@ public class AccessController {
 
         OAuth2AccessToken accessToken = oAuth20Service.getAccessToken(code);
 //        get Google profile
-        OAuthRequest request = new OAuthRequest(Verb.GET,"https://www.googleapis.com/oauth2/v1/userinfo?alt=json");
+        OAuthRequest request = new OAuthRequest(Verb.GET,"https://www.googleapis.com/oauth2/v3/userinfo");
         oAuth20Service.signRequest(accessToken,request);
         Response response = oAuth20Service.execute(request);
 
         Gson gson = new Gson();
         GoogleUser person = gson.fromJson(response.getBody(), GoogleUser.class);
 
+        User userFromDB = userService.getUserByName(person.getName());
+        if ( userFromDB == null ){
+            userFromDB = new  User(person.getName(),passwordEncoder.encode(person.getSub()),person.getSub());
+            userFromDB.addRole(roleService.getByName("ROLE_USER"));
+            userFromDB.setGoogleUser(person);
+            userService.saveUser(userFromDB);
+        }
+
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
         List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
         updatedAuthorities.add(authority);
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(person.getName(), person.getId(),updatedAuthorities);
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(person.getName(), passwordEncoder.encode(person.getSub()),updatedAuthorities);
         Authentication auth = authenticationManager.authenticate(authReq);
 
         SecurityContext sc = SecurityContextHolder.getContext();
@@ -95,7 +101,7 @@ public class AccessController {
 
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return "redirect:/user";
+        return "redirect:/user/";
     }
 
 }

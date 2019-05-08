@@ -1,5 +1,6 @@
 package com.example.test.model;
 
+import com.example.test.util.GoogleUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +29,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
 //    @JsonManagedReference
     private Set<Role> roles = new HashSet<Role>();
-
+    @OneToOne (cascade=CascadeType.ALL)
+    @JoinColumn (name="googleuser_id")
+    private GoogleUser googleUser;
     public User() {
     }
 
@@ -117,6 +120,17 @@ public class User implements UserDetails {
         }
         return grantedAuthorities;
     }
+    @JsonIgnore
+    public GoogleUser getGoogleUser() {
+        return googleUser;
+    }
+
+    public void setGoogleUser(GoogleUser googleUser) {
+        this.googleUser = googleUser;
+    }
+
+
+
 
     @JsonIgnore
     @Override

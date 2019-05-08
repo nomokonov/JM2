@@ -1,7 +1,22 @@
 package com.example.test.util;
 
+import com.example.test.model.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "googleuser")
 public class GoogleUser {
-     private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @OneToOne ( mappedBy="googleUser")
+    @JoinColumn (name="user_id")
+    private User user;
+    private String sub;
     private String name;
     private String given_name;
     private String family_name;
@@ -9,12 +24,12 @@ public class GoogleUser {
     private String picture;
     private String locale;
 
-    public String getId() {
-        return id;
+    public String getSub() {
+        return sub;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSub(String sub) {
+        this.sub = sub;
     }
 
     public String getName() {
@@ -63,5 +78,21 @@ public class GoogleUser {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

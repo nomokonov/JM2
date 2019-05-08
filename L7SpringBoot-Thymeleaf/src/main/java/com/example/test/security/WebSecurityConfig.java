@@ -26,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
 
+    @Autowired
+    AuthenticationManager authenticationManagerBean;
+
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -55,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+
     public void configure(AuthenticationManagerBuilder builder)
             throws Exception {
         builder.userDetailsService(userService).passwordEncoder(getPasswordEncoder());
