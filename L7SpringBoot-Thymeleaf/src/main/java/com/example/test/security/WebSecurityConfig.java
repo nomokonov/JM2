@@ -6,7 +6,6 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,10 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
-
-    @Autowired
-    AuthenticationManager authenticationManagerBean;
-
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -52,7 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
 
                 // Config for Logout Page
-                .and().rememberMe()
                 .and().logout();
         http.exceptionHandling().accessDeniedPage("/403");
     }
@@ -73,9 +67,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .build(GoogleApi20.instance());
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 }

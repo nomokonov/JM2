@@ -11,22 +11,20 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -38,12 +36,12 @@ public class AccessController {
     OAuth20Service oAuth20Service;
     @Autowired
     UserService userService;
-    @Autowired
-    AuthenticationManager authenticationManager;
+
     @Autowired
     RoleService roleService;
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @GetMapping(value = "/403")
     public String listUser(Map<String, Object> model) {
         model.put("message", "Access denied (403)");
@@ -56,7 +54,7 @@ public class AccessController {
             @RequestParam(required = false) boolean error,
             Map<String, Object> model) {
 
-       final String authorizationUrl = oAuth20Service.getAuthorizationUrl();
+        final String authorizationUrl = oAuth20Service.getAuthorizationUrl();
 
         model.put("authorizationUrl", authorizationUrl);
         if (error) {
@@ -70,37 +68,26 @@ public class AccessController {
     @GetMapping(value = {"/oauth2"})
     public String ouath2(
             HttpServletRequest req,
+            HttpServletResponse httpResponse,
             @RequestParam(required = false) String code,
             Map<String, Object> model) throws InterruptedException, ExecutionException, IOException {
 
         OAuth2AccessToken accessToken = oAuth20Service.getAccessToken(code);
 //        get Google profile
-        OAuthRequest request = new OAuthRequest(Verb.GET,"https://www.googleapis.com/oauth2/v3/userinfo");
-        oAuth20Service.signRequest(accessToken,request);
+        OAuthRequest request = new OAuthRequest(Verb.GET, "https://www.googleapis.com/oauth2/v3/userinfo");
+        oAuth20Service.signRequest(accessToken, request);
         Response response = oAuth20Service.execute(request);
 
         Gson gson = new Gson();
         GoogleUser person = gson.fromJson(response.getBody(), GoogleUser.class);
 
-        User userFromDB = userService.getUserByName(person.getName());
-        if ( userFromDB == null ){
-            userFromDB = new  User(person.getName(),passwordEncoder.encode(person.getSub()),person.getSub());
-            userFromDB.addRole(roleService.getByName("ROLE_USER"));
-            userFromDB.setGoogleUser(person);
-            userService.saveUser(userFromDB);
-        }
+        User userFromDB = new User(person.getName(), passwordEncoder.encode(person.getSub()), person.getSub());
 
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
-        List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
-        updatedAuthorities.add(authority);
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(person.getName(), passwordEncoder.encode(person.getSub()),updatedAuthorities);
-        Authentication auth = authenticationManager.authenticate(authReq);
-
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(userFromDB,
+                roleService.getByName("ROLE_USER"),userFromDB.getAuthorities());
         SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
+        sc.setAuthentication(authReq);
 
-        HttpSession session = req.getSession(true);
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return "redirect:/user/";
     }
 
