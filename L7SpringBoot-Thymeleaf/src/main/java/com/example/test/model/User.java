@@ -2,13 +2,14 @@ package com.example.test.model;
 
 import com.example.test.util.GoogleUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,9 +30,10 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
 //    @JsonManagedReference
     private Set<Role> roles = new HashSet<Role>();
-    @OneToOne (cascade=CascadeType.ALL)
-    @JoinColumn (name="googleuser_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "googleuser_id")
     private GoogleUser googleUser;
+
     public User() {
     }
 
@@ -111,6 +113,7 @@ public class User implements UserDetails {
     public void addRole(Role role) {
         this.roles.add(role);
     }
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -120,6 +123,7 @@ public class User implements UserDetails {
         }
         return grantedAuthorities;
     }
+
     @JsonIgnore
     public GoogleUser getGoogleUser() {
         return googleUser;
@@ -130,28 +134,30 @@ public class User implements UserDetails {
     }
 
 
-
-
     @JsonIgnore
     @Override
     public String getUsername() {
         return getName();
     }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isEnabled() {

@@ -39,14 +39,6 @@ public class UserController {
         return "user.html";
     }
 
-    @GetMapping(value = "/only")
-    public String useronly(
-            Principal user,
-            Map<String, Object> model) {
-
-        model.put("user", user);
-        return "user.html";
-    }
 
 
 }

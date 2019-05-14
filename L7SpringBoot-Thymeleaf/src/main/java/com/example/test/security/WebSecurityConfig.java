@@ -1,8 +1,5 @@
 package com.example.test.security;
 
-import com.github.scribejava.apis.GoogleApi20;
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.oauth.OAuth20Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,9 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/", "/login", "/static/**","/rest/**").permitAll();
-        http.authorizeRequests().antMatchers("/user/welcome").access("hasAnyRole('USER', 'ADMIN')");
-        http.authorizeRequests().antMatchers("/user/only").access("hasAnyRole('USER')");
+        http.authorizeRequests().antMatchers("/", "/login", "/static/**", "/rest/**").permitAll();
+        http.authorizeRequests().antMatchers("/user/**").access("hasAnyRole('USER', 'ADMIN')");
+        http.authorizeRequests().antMatchers("/useronly/").access("hasAnyRole('USER')");
         http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
         http.authorizeRequests().and().formLogin()//
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
@@ -58,13 +55,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         builder.userDetailsService(userService).passwordEncoder(getPasswordEncoder());
     }
 
-    @Bean
-    public OAuth20Service oAuth20Service(){
-        return  new ServiceBuilder("8557833449-mgqon77b3gturt3debee5i4rsts1e1lr.apps.googleusercontent.com")
-                .apiSecret("IBhDFvBzmJ66tiO8CMPuBZCA")
-                .defaultScope("profile")
-                .callback("http://localhost:8080/oauth2")
-                .build(GoogleApi20.instance());
-    }
 
 }
