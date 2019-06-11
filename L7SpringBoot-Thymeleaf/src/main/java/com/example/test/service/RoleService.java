@@ -27,4 +27,8 @@ public class RoleService {
     public Role getByName(String name) {
         return roleRepo.findByName(name);
     }
+
+    public void addRole(String name, String description){
+        roleRepo.save(new Role(name,description));
+    }
 }
